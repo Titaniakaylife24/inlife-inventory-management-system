@@ -15,8 +15,7 @@
         <div class="grid lg:grid-cols-2 gap-16 items-center">
 
             <!-- LEFT -->
-
-            <div>
+<div class="relative">
 
                 <span
                     class="inline-flex items-center px-4 py-2 rounded-full bg-pink-100 text-pink-600 font-semibold text-sm">
@@ -50,42 +49,24 @@
 
                 <!-- Features -->
 
-                <div class="mt-10 grid grid-cols-2 gap-5">
+                <div class="flex flex-wrap gap-4 mt-8">
 
-                    <div class="flex items-center gap-3">
+    <div class="card-inlife">
+        <p class="text-sm text-slate-500">Total Assets</p>
+        <h3 class="font-bold text-2xl">128+</h3>
+    </div>
 
-                        ✅
+    <div class="card-inlife">
+        <p class="text-sm text-slate-500">Borrowed</p>
+        <h3 class="font-bold text-2xl">34</h3>
+    </div>
 
-                        <span>Asset Tracking</span>
+    <div class="card-inlife">
+        <p class="text-sm text-slate-500">Low Stock</p>
+        <h3 class="font-bold text-2xl">8</h3>
+    </div>
 
-                    </div>
-
-                    <div class="flex items-center gap-3">
-
-                        ✅
-
-                        <span>Borrowing System</span>
-
-                    </div>
-
-                    <div class="flex items-center gap-3">
-
-                        ✅
-
-                        <span>Live Dashboard</span>
-
-                    </div>
-
-                    <div class="flex items-center gap-3">
-
-                        ✅
-
-                        <span>Role Management</span>
-
-                    </div>
-
-                </div>
-
+</div>
                 <!-- Button -->
 
                 <div class="mt-10 flex gap-4 flex-wrap">
@@ -106,7 +87,73 @@
 
                 </div>
 
+                <div class="mt-10 flex items-center gap-4 flex-wrap">
+
+    <div class="flex -space-x-3">
+        <img src="https://i.pravatar.cc/50?img=1"
+             class="w-10 h-10 rounded-full border-2 border-white">
+
+        <img src="https://i.pravatar.cc/50?img=2"
+             class="w-10 h-10 rounded-full border-2 border-white">
+
+        <img src="https://i.pravatar.cc/50?img=3"
+             class="w-10 h-10 rounded-full border-2 border-white">
+    </div>
+
+    <div>
+        <p class="font-semibold text-sm">
+            Trusted by 50+ Teams
+        </p>
+
+        <p class="text-xs text-slate-500">
+            HR, IT, Finance, Operations
+        </p>
+    </div>
+
+</div>
+
+<div class="mt-20">
+
+    <h2 class="text-4xl font-black text-center">
+        Why Choose InLife IMS?
+    </h2>
+
+    <p class="text-center text-slate-500 mt-4 max-w-2xl mx-auto">
+        Built for modern companies to track assets, control access, and
+        generate reports in real time.
+    </p>
+
+    <div class="grid md:grid-cols-3 gap-8 mt-6">
+
+        <div class="p-6 rounded-3xl bg-white/60 backdrop-blur-md shadow-lg border border-white/40">
+            <div class="text-4xl">⚡</div>
+            <h3 class="font-bold text-xl mt-4">Fast Tracking</h3>
+            <p class="mt-3 text-slate-500">
+                Asset movement tracked instantly.
+            </p>
+        </div>
+
+        <div class="p-8 rounded-3xl bg-white/60 backdrop-blur-md shadow-lg border border-white/40">
+            <div class="text-4xl">🔒</div>
+            <h3 class="font-bold text-xl mt-4">Secure Access</h3>
+            <p class="mt-3 text-slate-500">
+                Role-based permissions.
+            </p>
+        </div>
+
+        <div class="p-8 rounded-3xl bg-white/60 backdrop-blur-md shadow-lg border border-white/40">
+            <div class="text-4xl">📊</div>
+            <h3 class="font-bold text-xl mt-4">Smart Reports</h3>
+            <p class="mt-3 text-slate-500">
+                Real-time analytics dashboard.
+            </p>
+        </div>
+
+    </div>
+
+</div>
             </div>
+
 
             <!-- RIGHT -->
 
@@ -221,12 +268,37 @@
 
                         <!-- Fake Chart -->
 
-                        <div
-                            class="mt-8 h-40 rounded-2xl bg-slate-100 dark:bg-slate-800 flex items-center justify-center">
+                        <div class="card-inlife w-full mt-6">
 
-                            📈 Inventory Analytics
+    <h3 class="font-bold text-lg mb-6">
+        Live Inventory Overview
+    </h3>
 
-                        </div>
+    <div class="space-y-4">
+
+        <div class="flex justify-between">
+            <span>Dell Laptop</span>
+            <span class="text-green-500 font-medium">Available</span>
+        </div>
+
+        <div class="flex justify-between">
+            <span>Epson Printer</span>
+            <span class="text-yellow-500 font-medium">Borrowed</span>
+        </div>
+
+        <div class="flex justify-between">
+            <span>Projector Sony</span>
+            <span class="text-red-500 font-medium">Maintenance</span>
+        </div>
+
+    </div>
+
+    <div class="mt-8 rounded-2xl overflow-hidden">
+        <img src="{{ asset('images/inventory-preview.jpg.jpg') }}"
+             class="w-full object-cover">
+    </div>
+
+</div>
 
                     </div>
 

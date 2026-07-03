@@ -12,17 +12,15 @@
 
 <body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-white">
 
-    @include('components.navbar')
+    @include('components.landing.navbar')
+    @include('components.landing.hero')
+    @include('components.landing.inventory')
+    @include('components.landing.roles')
+    @include('components.landing.reports')
+    @include('components.landing.about')
 
-    @include('components.hero')
-
-    @include('components.features')
-
-    @include('components.statistics')
-
-    @include('components.workflow')
-
-    @include('components.footer')
+    @include('components.cta')
+    @include('dashboard.footer')
 
 </body>
 
