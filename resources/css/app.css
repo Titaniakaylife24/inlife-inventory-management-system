@@ -35,3 +35,46 @@
     content: '';
     @apply absolute left-0 -bottom-2 w-full h-0.5 bg-pink-500 rounded-full;
 }
+
+.sidebar-link{
+    @apply flex items-center gap-3 px-4 py-3 rounded-xl text-slate-300 hover:bg-slate-800 hover:text-white transition-all;
+}
+
+.sidebar-link i{
+    @apply w-5 text-center;
+}
+
+.sidebar-link svg{
+
+    width:20px;
+    height:20px;
+
+}
+
+.sidebar-link:hover{
+
+    @apply bg-pink-600 text-white;
+
+}
+
+.sidebar-link.active{
+
+    @apply bg-gradient-to-r from-pink-500 to-purple-600 text-white shadow-lg;
+
+}
+
+.sidebar-link{
+    @apply flex items-center gap-3 px-4 py-3 rounded-xl text-slate-300 transition-all duration-200;
+}
+
+.sidebar-link i{
+    @apply w-5 text-center;
+}
+
+.sidebar-link:hover{
+    @apply bg-slate-800 text-white;
+}
+
+.sidebar-link.active{
+    @apply bg-slate-800 text-white font-medium;
+}

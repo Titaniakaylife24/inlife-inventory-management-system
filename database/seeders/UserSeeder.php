@@ -2,8 +2,9 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Seeder;
 use App\Models\User;
+use App\Models\Role;
+use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 
 class UserSeeder extends Seeder
@@ -12,25 +13,25 @@ class UserSeeder extends Seeder
     {
         $users = [
             [
-                'role_id' => 1,
+                'role' => 'Admin',
                 'name' => 'Administrator',
                 'email' => 'admin@inlife.id',
                 'password' => 'admin123',
             ],
             [
-                'role_id' => 2,
+                'role' => 'Staff',
                 'name' => 'Staff Inventory',
                 'email' => 'staff@inlife.id',
                 'password' => 'staff123',
             ],
             [
-                'role_id' => 3,
+                'role' => 'Manager',
                 'name' => 'Inventory Manager',
                 'email' => 'manager@inlife.id',
                 'password' => 'manager123',
             ],
             [
-                'role_id' => 8,
+                'role' => 'Employee',
                 'name' => 'Employee',
                 'email' => 'employee@inlife.id',
                 'password' => 'employee123',
@@ -38,10 +39,13 @@ class UserSeeder extends Seeder
         ];
 
         foreach ($users as $user) {
+
+            $role = Role::where('name', $user['role'])->first();
+
             User::updateOrCreate(
                 ['email' => $user['email']],
                 [
-                    'role_id' => $user['role_id'],
+                    'role_id' => $role->id,
                     'name' => $user['name'],
                     'password' => Hash::make($user['password']),
                 ]

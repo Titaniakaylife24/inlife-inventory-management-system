@@ -3,11 +3,15 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use App\Models\Borrowing;
 
 class Product extends Model
 {
+    use HasFactory; // <-- WAJIB ADA
+
     protected $fillable = [
         'category_id',
         'location_id',
@@ -38,4 +42,9 @@ class Product extends Model
     {
         return $this->hasMany(BorrowingDetail::class);
     }
+
+    public function borrowings()
+{
+    return $this->hasMany(Borrowing::class);
+}
 }

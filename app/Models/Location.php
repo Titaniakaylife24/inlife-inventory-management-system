@@ -3,16 +3,15 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Location extends Model
 {
     protected $fillable = [
         'name',
-        'description',
+        'description'
     ];
 
-    public function products(): HasMany
+    public function assets()
     {
         return $this->hasMany(Product::class);
     }

@@ -9,6 +9,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use App\Models\Borrowing;
 
 class User extends Authenticatable
 {
@@ -45,8 +46,13 @@ public function role(): BelongsTo
     return $this->belongsTo(Role::class);
 }
 
-public function borrowings(): HasMany
+public function borrowings()
 {
     return $this->hasMany(Borrowing::class);
+}
+
+public function approvedBorrowings()
+{
+    return $this->hasMany(Borrowing::class, 'approved_by');
 }
 }

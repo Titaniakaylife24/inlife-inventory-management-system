@@ -1,4 +1,4 @@
-<<x-page-bg>
+<x-page-bg class="pt-36 pb-24">
 
     <div class="max-w-7xl mx-auto px-6">
 

@@ -17,31 +17,44 @@ return new class extends Migration
                 ->cascadeOnUpdate()
                 ->restrictOnDelete();
 
-            $table->string('borrow_code')->unique();
+$table->foreignId('product_id')
+    ->constrained('products')
+    ->cascadeOnUpdate()
+    ->restrictOnDelete();
 
-            $table->string('borrower_name');
+$table->foreignId('approved_by')
+    ->nullable()
+    ->constrained('users')
+    ->nullOnDelete();
 
-            $table->date('borrow_date');
+$table->integer('quantity')->default(1);
 
-            $table->date('expected_return_date');
+$table->string('borrow_code')->unique();
 
-            $table->date('actual_return_date')->nullable();
+$table->string('borrower_name');
 
-            $table->enum('purpose',[
-                'Operational',
-                'Meeting',
-                'Event',
-                'Training',
-                'Other'
-            ])->default('Operational');
+$table->date('borrow_date');
 
-            $table->enum('status',[
-                'Borrowed',
-                'Returned',
-                'Late'
-            ])->default('Borrowed');
+$table->date('expected_return_date');
 
-            $table->text('notes')->nullable();
+$table->date('actual_return_date')->nullable();
+
+$table->enum('purpose',[
+    'Operational',
+    'Meeting',
+    'Event',
+    'Training',
+    'Other'
+])->default('Operational');
+
+$table->enum('status',[
+    'Pending',
+    'Approved',
+    'Rejected',
+    'Returned'
+])->default('Pending');
+
+$table->text('notes')->nullable();
 
             $table->timestamps();
 

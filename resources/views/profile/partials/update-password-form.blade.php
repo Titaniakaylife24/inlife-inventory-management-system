@@ -1,48 +1,135 @@
-<section>
-    <header>
-        <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
-            {{ __('Update Password') }}
-        </h2>
+<div class="bg-white rounded-3xl shadow p-8"
+     x-data="{
+        current:false,
+        password:false,
+        confirm:false
+     }">
 
-        <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">
-            {{ __('Ensure your account is using a long, random password to stay secure.') }}
-        </p>
-    </header>
+    <h2 class="text-2xl font-bold mb-6">
+        Change Password
+    </h2>
 
-    <form method="post" action="{{ route('password.update') }}" class="mt-6 space-y-6">
+    <form method="POST" action="{{ route('password.update') }}">
+
         @csrf
-        @method('put')
+        @method('PUT')
 
-        <div>
-            <x-input-label for="update_password_current_password" :value="__('Current Password')" />
-            <x-text-input id="update_password_current_password" name="current_password" type="password" class="mt-1 block w-full" autocomplete="current-password" />
-            <x-input-error :messages="$errors->updatePassword->get('current_password')" class="mt-2" />
+        {{-- Current Password --}}
+        <div class="mb-6">
+
+            <label class="block mb-2 font-semibold">
+                Current Password
+            </label>
+
+            <div class="relative">
+
+                <input
+                    :type="current ? 'text' : 'password'"
+                    name="current_password"
+                    class="w-full rounded-xl border-slate-300 pr-14">
+
+                <button
+                    type="button"
+                    @click="current=!current"
+                    class="absolute right-4 top-1/2 -translate-y-1/2">
+
+                    <img
+                        :src="current
+                            ? '{{ asset('images/kebuka.png') }}'
+                            : '{{ asset('images/ketutup3.png') }}'"
+                        class="w-6 h-6">
+
+                </button>
+
+            </div>
+
+            @error('current_password')
+                <p class="text-red-500 text-sm mt-2">
+                    {{ $message }}
+                </p>
+            @enderror
+
         </div>
 
-        <div>
-            <x-input-label for="update_password_password" :value="__('New Password')" />
-            <x-text-input id="update_password_password" name="password" type="password" class="mt-1 block w-full" autocomplete="new-password" />
-            <x-input-error :messages="$errors->updatePassword->get('password')" class="mt-2" />
+        {{-- New Password --}}
+        <div class="mb-6">
+
+            <label class="block mb-2 font-semibold">
+                New Password
+            </label>
+
+            <div class="relative">
+
+                <input
+                    :type="password ? 'text' : 'password'"
+                    name="password"
+                    class="w-full rounded-xl border-slate-300 pr-14">
+
+                <button
+                    type="button"
+                    @click="password=!password"
+                    class="absolute right-4 top-1/2 -translate-y-1/2">
+
+                    <img
+                        :src="password
+                            ? '{{ asset('images/kebuka.png') }}'
+                            : '{{ asset('images/ketutup3.png') }}'"
+                        class="w-6 h-6">
+
+                </button>
+
+            </div>
+
+            @error('password')
+                <p class="text-red-500 text-sm mt-2">
+                    {{ $message }}
+                </p>
+            @enderror
+
         </div>
 
-        <div>
-            <x-input-label for="update_password_password_confirmation" :value="__('Confirm Password')" />
-            <x-text-input id="update_password_password_confirmation" name="password_confirmation" type="password" class="mt-1 block w-full" autocomplete="new-password" />
-            <x-input-error :messages="$errors->updatePassword->get('password_confirmation')" class="mt-2" />
+        {{-- Confirm Password --}}
+        <div class="mb-8">
+
+            <label class="block mb-2 font-semibold">
+                Confirm New Password
+            </label>
+
+            <div class="relative">
+
+                <input
+                    :type="confirm ? 'text' : 'password'"
+                    name="password_confirmation"
+                    class="w-full rounded-xl border-slate-300 pr-14">
+
+                <button
+                    type="button"
+                    @click="confirm=!confirm"
+                    class="absolute right-4 top-1/2 -translate-y-1/2">
+
+                    <img
+                        :src="confirm
+                            ? '{{ asset('images/kebuka.png') }}'
+                            : '{{ asset('images/ketutup3.png') }}'"
+                        class="w-6 h-6">
+
+                </button>
+
+            </div>
+
         </div>
 
-        <div class="flex items-center gap-4">
-            <x-primary-button>{{ __('Save') }}</x-primary-button>
+        <button
+            type="submit"
+            class="px-6 py-3 rounded-xl text-white font-semibold
+            bg-gradient-to-r from-pink-500 to-purple-600 hover:opacity-90 transition">
 
-            @if (session('status') === 'password-updated')
-                <p
-                    x-data="{ show: true }"
-                    x-show="show"
-                    x-transition
-                    x-init="setTimeout(() => show = false, 2000)"
-                    class="text-sm text-gray-600 dark:text-gray-400"
-                >{{ __('Saved.') }}</p>
-            @endif
-        </div>
+            <i class="fa-solid fa-lock mr-2"></i>
+
+            Update Password
+
+        </button>
+
     </form>
-</section>
+
+</div>

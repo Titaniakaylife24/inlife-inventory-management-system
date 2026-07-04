@@ -11,7 +11,7 @@
 
 @include('components.landing.navbar')
 
-<x-page-bg>
+<x-page-bg class="pt-36 pb-24">
 
     <div class="max-w-7xl mx-auto px-6">
 
@@ -155,7 +155,6 @@
 
 </x-page-bg>
 
-@include('components.cta')
 @include('components.dashboard.footer')
 
 </body>

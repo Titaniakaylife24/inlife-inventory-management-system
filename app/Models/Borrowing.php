@@ -3,13 +3,14 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Borrowing extends Model
 {
     protected $fillable = [
         'user_id',
+        'product_id',
+        'approved_by',
+        'quantity',
         'borrow_code',
         'borrower_name',
         'borrow_date',
@@ -20,22 +21,26 @@ class Borrowing extends Model
         'notes',
     ];
 
-    protected function casts(): array
-    {
-        return [
-            'borrow_date' => 'date',
-            'expected_return_date' => 'date',
-            'actual_return_date' => 'date',
-        ];
-    }
+    /*
+    |--------------------------------------------------------------------------
+    | Relationships
+    |--------------------------------------------------------------------------
+    */
 
-    public function user(): BelongsTo
+    public function user()
     {
         return $this->belongsTo(User::class);
     }
 
-    public function details(): HasMany
+    public function product()
     {
-        return $this->hasMany(BorrowingDetail::class);
+        return $this->belongsTo(Product::class);
     }
+
+    public function approver()
+    {
+        return $this->belongsTo(User::class, 'approved_by');
+    }
+
+    
 }

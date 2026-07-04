@@ -12,7 +12,7 @@
 
     @include('components.landing.navbar')
 
-    <x-page-bg>
+    <x-page-bg class="pt-36 pb-24">
 
         <div class="max-w-7xl mx-auto px-6">
 
@@ -140,21 +140,10 @@
 
             </div>
 
-            {{-- EXPORT BUTTON --}}
-            <div class="text-center mt-20">
-
-                <button
-                    class="px-8 py-4 rounded-xl bg-gradient-to-r from-pink-500 to-purple-600 text-white font-semibold shadow-lg hover:scale-105 transition">
-                    Export Report
-                </button>
-
-            </div>
-
         </div>
 
 </x-page-bg>
 
-    @include('components.cta')
     @include('components.dashboard.footer')
 
 </body>

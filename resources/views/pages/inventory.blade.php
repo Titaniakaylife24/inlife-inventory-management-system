@@ -13,8 +13,6 @@
 
     @include('components.landing.inventory-section')
 
-    @include('components.cta')
-
     @include('components.dashboard.footer')
 
 </body>

@@ -1,29 +1,87 @@
-<x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-            {{ __('Profile') }}
-        </h2>
-    </x-slot>
+@extends('layouts.dashboard')
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
-            <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
-                <div class="max-w-xl">
-                    @include('profile.partials.update-profile-information-form')
-                </div>
-            </div>
+@section('title','Profile')
 
-            <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
-                <div class="max-w-xl">
-                    @include('profile.partials.update-password-form')
-                </div>
-            </div>
+@section('content')
 
-            <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
-                <div class="max-w-xl">
-                    @include('profile.partials.delete-user-form')
-                </div>
-            </div>
-        </div>
+<div class="max-w-5xl mx-auto space-y-8">
+
+    {{-- Header --}}
+    <div>
+
+        <h1 class="text-3xl font-black">
+
+            My Profile
+
+        </h1>
+
+        <p class="text-slate-500 mt-2">
+
+            Manage your personal information and account settings.
+
+        </p>
+
     </div>
-</x-app-layout>
+
+    {{-- Profile Card --}}
+    <div class="bg-white rounded-3xl shadow p-8">
+
+        <div class="flex items-center gap-6">
+
+            <div
+                class="w-24 h-24 rounded-full
+                bg-gradient-to-r
+                from-pink-500
+                to-purple-600
+                flex items-center justify-center
+                text-white text-4xl font-bold">
+
+                {{ strtoupper(substr(auth()->user()->name,0,1)) }}
+
+            </div>
+
+            <div>
+
+                <h2 class="text-2xl font-bold">
+
+                    {{ auth()->user()->name }}
+
+                </h2>
+
+                <p class="text-slate-500">
+
+                    {{ auth()->user()->email }}
+
+                </p>
+
+                <div class="mt-3 flex gap-3">
+
+                    <span class="px-4 py-1 rounded-full bg-pink-100 text-pink-600">
+
+                        {{ auth()->user()->role->name }}
+
+                    </span>
+
+                    <span class="px-4 py-1 rounded-full bg-slate-100">
+
+                        Joined {{ auth()->user()->created_at->format('d M Y') }}
+
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    {{-- Edit Profile --}}
+    @include('profile.partials.update-profile-information-form')
+
+    {{-- Change Password --}}
+    @include('profile.partials.update-password-form')
+
+</div>
+
+@endsection

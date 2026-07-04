@@ -2,27 +2,6 @@
 
     <div class="max-w-7xl mx-auto px-8">
 
-        {{-- Top CTA --}}
-        <div
-            class="bg-gradient-to-r from-pink-500 to-purple-600 rounded-3xl p-8 mb-14 flex flex-col lg:flex-row items-center justify-between gap-6">
-
-            <div>
-                <h2 class="text-3xl font-bold">
-                    Start Managing Assets Smarter
-                </h2>
-
-                <p class="text-pink-100 mt-2">
-                    Simplify inventory tracking, borrowing, and reporting with InLife IMS.
-                </p>
-            </div>
-
-            <a href="{{ route('register') }}"
-               class="bg-white text-pink-600 px-6 py-3 rounded-2xl font-semibold hover:scale-105 transition">
-                Get Started
-            </a>
-
-        </div>
-
         {{-- Main Footer --}}
         <div class="grid lg:grid-cols-4 gap-10">
 
