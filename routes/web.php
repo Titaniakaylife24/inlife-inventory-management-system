@@ -1,3 +1,5 @@
+
+
 <?php
 
 use Illuminate\Support\Facades\Route;
@@ -8,6 +10,9 @@ use App\Http\Controllers\BorrowController;
 use App\Http\Controllers\ReturnController;
 use App\Http\Controllers\MyBorrowingController;
 use App\Http\Controllers\EmployeeDashboardController;
+use App\Http\Controllers\StockController;
+use App\Http\Controllers\BorrowRequestController;
+use App\Http\Controllers\ReportController;
 
 /*
 |--------------------------------------------------------------------------
@@ -50,8 +55,9 @@ Route::middleware('auth')->group(function () {
     Route::view('/dashboard/admin', 'dashboard.admin')
         ->name('dashboard.admin');
 
-    Route::view('/dashboard/staff', 'dashboard.staff')
-        ->name('dashboard.staff');
+    Route::get('/dashboard/staff',
+    [DashboardController::class,'staff'])
+    ->name('dashboard.staff');
 
     Route::view('/dashboard/manager', 'dashboard.manager')
         ->name('dashboard.manager');
@@ -93,32 +99,33 @@ Route::get('/dashboard/my-borrowings/{borrowing}',
     Route::get('/dashboard/inventory', [ProductController::class, 'index'])
         ->name('dashboard.inventory.index');
 
-    Route::get('/dashboard/inventory/{inventory}', [ProductController::class, 'show'])
-        ->name('dashboard.inventory.show');
-
-
-    /*
-    |--------------------------------------------------------------------------
-    | CRUD Inventory (Admin & Staff)
-    |--------------------------------------------------------------------------
-    */
 
     Route::middleware('role:Admin,Staff')->group(function () {
 
         Route::get('/dashboard/inventory/create', [ProductController::class, 'create'])
-            ->name('dashboard.inventory.create');
+        ->name('dashboard.inventory.create');
 
-        Route::post('/dashboard/inventory', [ProductController::class, 'store'])
-            ->name('dashboard.inventory.store');
+    Route::post('/dashboard/inventory', [ProductController::class, 'store'])
+        ->name('dashboard.inventory.store');
 
-        Route::get('/dashboard/inventory/{inventory}/edit', [ProductController::class, 'edit'])
-            ->name('dashboard.inventory.edit');
+    Route::get('/dashboard/inventory/{inventory}/edit', [ProductController::class, 'edit'])
+        ->name('dashboard.inventory.edit');
 
-        Route::put('/dashboard/inventory/{inventory}', [ProductController::class, 'update'])
-            ->name('dashboard.inventory.update');
+    Route::put('/dashboard/inventory/{inventory}', [ProductController::class, 'update'])
+        ->name('dashboard.inventory.update');
 
-        Route::delete('/dashboard/inventory/{inventory}', [ProductController::class, 'destroy'])
-            ->name('dashboard.inventory.destroy');
+    Route::get('/dashboard/inventory/{inventory}', [ProductController::class, 'show'])
+        ->name('dashboard.inventory.show');
+
+// Category
+Route::get('/dashboard/category', function () {
+    return view('dashboard.staff.category');
+})->name('category.index');
+
+// Location
+Route::get('/dashboard/location', function () {
+    return view('dashboard.staff.location');
+})->name('location.index');
 
     });
 
@@ -138,6 +145,29 @@ Route::get('/dashboard/my-borrowings/{borrowing}',
     Route::delete('/profile', [ProfileController::class, 'destroy'])
         ->name('profile.destroy');
 
+});
+
+Route::middleware(['auth','role:Staff'])->prefix('dashboard')->group(function () {
+
+    Route::get('/stock-monitoring', [StockController::class, 'index'])
+        ->name('stock.index');
+
+     Route::get('/borrow-request',
+        [BorrowRequestController::class,'index'])
+        ->name('borrow-request.index');
+
+    Route::get('/borrow-request/{borrowing}',
+        [BorrowRequestController::class,'show'])
+        ->name('borrow-request.show');
+
+    Route::get('/report', [ReportController::class, 'index'])
+        ->name('report.index');
+
+    Route::get('/report/export/excel', [ReportController::class, 'exportExcel'])
+    ->name('report.export.excel');
+
+Route::get('/report/export/pdf', [ReportController::class, 'exportPdf'])
+    ->name('report.export.pdf');
 });
 
 require __DIR__.'/auth.php';

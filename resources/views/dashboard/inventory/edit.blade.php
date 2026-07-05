@@ -22,7 +22,7 @@
         </div>
 
         <a
-            href="{{ route('inventory.index') }}"
+            href="{{ route('dashboard.inventory.index') }}"
             class="px-5 py-3 rounded-xl bg-slate-200 hover:bg-slate-300 transition">
 
             <i class="fa-solid fa-arrow-left mr-2"></i>
@@ -62,7 +62,7 @@
     <div class="bg-white rounded-3xl shadow-lg p-8">
 
         <form
-            action="{{ route('inventory.update',$product) }}"
+            action="{{ route('dashboard.inventory.update',$product) }}"
             method="POST"
             enctype="multipart/form-data">
 

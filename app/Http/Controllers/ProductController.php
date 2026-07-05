@@ -7,6 +7,7 @@ use App\Models\Category;
 use App\Models\Location;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
 
 class ProductController extends Controller
 {
@@ -62,7 +63,7 @@ class ProductController extends Controller
         Product::create($validated);
 
         return redirect()
-            ->route('inventory.index')
+            ->route('dashboard.inventory.index')
             ->with('success', 'Asset berhasil ditambahkan.');
     }
 
@@ -116,20 +117,24 @@ class ProductController extends Controller
         $inventory->update($validated);
 
         return redirect()
-            ->route('inventory.index')
+            ->route('dashboard.inventory.index')
             ->with('success', 'Asset berhasil diperbarui.');
     }
 
     public function destroy(Product $inventory)
-    {
-        if ($inventory->image) {
-            Storage::disk('public')->delete($inventory->image);
-        }
-
-        $inventory->delete();
-
-        return redirect()
-            ->route('inventory.index')
-            ->with('success', 'Asset berhasil dihapus.');
+{
+    if (Auth::user()->role->name != 'Admin') {
+        abort(403);
     }
+
+    if ($inventory->image) {
+        Storage::disk('public')->delete($inventory->image);
+    }
+
+    $inventory->delete();
+
+    return redirect()
+        ->route('dashboard.inventory.index')
+        ->with('success','Asset berhasil dihapus.');
+}
 }

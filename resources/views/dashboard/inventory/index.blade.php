@@ -27,7 +27,7 @@
 
         @if(in_array(auth()->user()->role->name, ['Admin','Staff']))
 
-<a href="{{ route('inventory.create') }}"
+<a href="{{ route('dashboard.inventory.create') }}"
 class="inline-flex items-center gap-2 rounded-xl bg-fuchsia-600 px-5 py-3 text-white font-semibold hover:bg-fuchsia-700 transition">
 
 <i class="fa-solid fa-plus"></i>
@@ -231,50 +231,53 @@ Add Asset
                     {{-- Action --}}
                     <td class="px-6 py-4">
 
-                        <div class="flex justify-center gap-2">
+<div class="flex justify-center gap-2">
 
-{{-- Semua role boleh lihat detail --}}
-<a
-href="{{ route('dashboard.inventory.show', $product) }}"
-class="w-10 h-10 rounded-lg bg-sky-100 text-sky-600 flex items-center justify-center hover:bg-sky-200">
+    {{-- Semua role --}}
+    <a href="{{ route('dashboard.inventory.show',$product) }}"
+    class="w-10 h-10 rounded-lg bg-sky-100 text-sky-600 flex items-center justify-center hover:bg-sky-200">
 
-<i class="fa-solid fa-eye"></i>
+        <i class="fa-solid fa-eye"></i>
 
-</a>
+    </a>
 
-@if(in_array(auth()->user()->role->name,['Admin','Staff']))
+    {{-- Admin & Staff boleh edit --}}
+    @if(in_array(auth()->user()->role->name,['Admin','Staff']))
 
-<a
-href="{{ route('dashboard.inventory.edit', $product) }}"
-class="w-10 h-10 rounded-lg bg-yellow-100 text-yellow-700 flex items-center justify-center hover:bg-yellow-200">
+    <a href="{{ route('dashboard.inventory.edit',$product) }}"
+    class="w-10 h-10 rounded-lg bg-yellow-100 text-yellow-700 flex items-center justify-center hover:bg-yellow-200">
 
-<i class="fa-solid fa-pen"></i>
+        <i class="fa-solid fa-pen"></i>
 
-</a>
+    </a>
 
-<form
-action="{{ route('inventory.destroy',$product) }}"
-method="POST">
+    @endif
 
-@csrf
-@method('DELETE')
+    {{-- HANYA ADMIN boleh delete --}}
+    @if(auth()->user()->role->name == 'Admin')
 
-<button
-onclick="return confirm('Delete this asset?')"
-class="w-10 h-10 rounded-lg bg-red-100 text-red-600 hover:bg-red-200">
+    <form
+    action="{{ route('dashboard.inventory.destroy',$product) }}"
+    method="POST">
 
-<i class="fa-solid fa-trash"></i>
+        @csrf
+        @method('DELETE')
 
-</button>
+        <button
+        onclick="return confirm('Delete this asset?')"
+        class="w-10 h-10 rounded-lg bg-red-100 text-red-600 hover:bg-red-200">
 
-</form>
+            <i class="fa-solid fa-trash"></i>
 
-@endif
+        </button>
+
+    </form>
+
+    @endif
 
 </div>
 
-                    </td>
-
+</td>
                 </tr>
 
                 @empty

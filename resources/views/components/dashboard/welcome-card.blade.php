@@ -1,3 +1,7 @@
+@php
+    $role = Auth::user()->role->name;
+@endphp
+
 <div
 class="relative
 overflow-hidden
@@ -36,50 +40,108 @@ shadow-xl">
 
             <p class="mt-5 text-pink-100 leading-8 max-w-xl">
 
-                Welcome back to the
+@if($role == 'Employee')
 
-                <span class="font-bold text-white">
+    Browse available assets and submit borrowing requests easily through the system.
 
-                    InLife Inventory Management System.
+@elseif($role == 'Staff')
 
-                </span>
+    Monitor inventory stock levels and review borrowing requests submitted by employees.
 
-                We hope your work goes smoothly today and that all inventory tasks are completed with ease.
+@elseif($role == 'Admin')
 
-            </p>
+    Manage inventory data, users, categories, locations, and ensure all operational activities run smoothly.
+
+@elseif($role == 'Manager')
+
+    Monitor inventory performance and review reports to support strategic decisions.
+
+@endif
+
+</p>
 
             {{-- Action Button --}}
             <div class="mt-8 flex gap-4">
 
-                <a
-                    href="{{ route('borrow.index') }}"
-                    class="px-6 py-3 rounded-xl
-                    bg-white
-                    text-fuchsia-700
-                    font-semibold
-                    shadow-lg
-                    hover:scale-105
-                    hover:shadow-xl
-                    transition">
+    {{-- Employee --}}
+    @if($role == 'Employee')
 
-                    Borrow Asset →
+        <a
+            href="{{ route('borrow.index') }}"
+            class="px-6 py-3 rounded-xl bg-white text-fuchsia-700 font-semibold shadow-lg hover:scale-105 transition">
 
-                </a>
+            Borrow Asset →
 
-                <a
-                    href="{{ route('dashboard.inventory.index') }}"
-                    class="px-6 py-3 rounded-xl
-                    border border-white/30
-                    bg-white/10
-                    backdrop-blur
-                    hover:bg-white/20
-                    transition">
+        </a>
 
-                    View Inventory
+        <a
+            href="{{ route('dashboard.inventory.index') }}"
+            class="px-6 py-3 rounded-xl border border-white/30 bg-white/10">
 
-                </a>
+            View Inventory
 
-            </div>
+        </a>
+
+    {{-- Staff --}}
+    @elseif($role == 'Staff')
+
+        <a
+            href="{{ route('stock.index') }}"
+            class="px-6 py-3 rounded-xl bg-white text-fuchsia-700 font-semibold">
+
+            Stock Monitoring →
+
+        </a>
+
+        <a
+            href="{{ route('borrow-request.index') }}"
+            class="px-6 py-3 rounded-xl border border-white/30 bg-white/10">
+
+            Borrow Requests
+
+        </a>
+
+    {{-- Admin --}}
+    @elseif($role == 'Admin')
+
+        <a
+            href="{{ route('dashboard.inventory.index') }}"
+            class="px-6 py-3 rounded-xl bg-white text-fuchsia-700 font-semibold">
+
+            Manage Inventory →
+
+        </a>
+
+        <a
+            href="{{ route('report.index') }}"
+            class="px-6 py-3 rounded-xl border border-white/30 bg-white/10">
+
+            Reports
+
+        </a>
+
+    {{-- Manager --}}
+    @elseif($role == 'Manager')
+
+        <a
+            href="{{ route('report.index') }}"
+            class="px-6 py-3 rounded-xl bg-white text-fuchsia-700 font-semibold">
+
+            View Reports →
+
+        </a>
+
+        <a
+            href="{{ route('dashboard.inventory.index') }}"
+            class="px-6 py-3 rounded-xl border border-white/30 bg-white/10">
+
+            Inventory
+
+        </a>
+
+    @endif
+
+</div>
 
         </div>
 

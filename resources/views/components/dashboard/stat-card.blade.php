@@ -1,24 +1,28 @@
-<a href="{{ $link ?? '#' }}" class="block">
+@if(isset($url))
+
+<a href="{{ $url }}" class="block group">
+
+@else
+
+<div class="group">
+
+@endif
 
     <div
         class="bg-white rounded-3xl shadow-md
         hover:shadow-2xl hover:-translate-y-2
-        transition duration-300 cursor-pointer p-6">
+        transition duration-300 p-6">
 
         <div class="flex justify-between items-center">
 
             <div>
 
                 <p class="text-slate-500 font-medium">
-
                     {{ $title }}
-
                 </p>
 
                 <h2 class="text-5xl font-black mt-2 text-slate-800">
-
                     {{ $value }}
-
                 </h2>
 
             </div>
@@ -36,18 +40,14 @@
 
         </div>
 
-        <div class="mt-5 flex justify-end">
-
-            <span
-                class="text-sm text-fuchsia-600 font-semibold
-                group-hover:translate-x-1 transition">
-
-                View →
-
-            </span>
-
-        </div>
-
     </div>
 
+@if(isset($url))
+
 </a>
+
+@else
+
+</div>
+
+@endif

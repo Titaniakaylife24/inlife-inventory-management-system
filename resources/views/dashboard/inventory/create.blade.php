@@ -18,7 +18,7 @@
             </p>
         </div>
 
-        <a href="{{ route('inventory.index') }}"
+        <a href="{{ route('dashboard.inventory.index') }}"
             class="px-5 py-3 rounded-xl bg-slate-200 hover:bg-slate-300 transition">
             ← Back
         </a>
@@ -42,7 +42,7 @@
     <div class="bg-white rounded-3xl shadow p-8">
 
         <form
-            action="{{ route('inventory.store') }}"
+            action="{{ route('dashboard.inventory.store') }}"
             method="POST"
             enctype="multipart/form-data">
 

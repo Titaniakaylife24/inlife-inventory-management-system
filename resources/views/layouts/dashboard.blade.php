@@ -19,7 +19,23 @@
 
 <div class="flex h-screen overflow-hidden">
 
+    @php
+    $role = Auth::user()->role->name;
+@endphp
+
+@if($role == 'Admin')
+    @include('components.dashboard.sidebar-admin')
+
+@elseif($role == 'Staff')
+    @include('components.dashboard.sidebar-staff')
+
+@elseif($role == 'Manager')
+    @include('components.dashboard.sidebar-manager')
+
+@elseif($role == 'Employee')
     @include('components.dashboard.sidebar')
+
+@endif
 
     <div class="flex flex-col flex-1 overflow-hidden">
 
