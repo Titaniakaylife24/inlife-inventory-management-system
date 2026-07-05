@@ -14,7 +14,10 @@ class StockController extends Controller
     $status = $request->status;
     $category = $request->category;
 
-    $query = Product::with('category');
+    $query = Product::with([
+    'category',
+    'location',
+]);
 
     if ($search) {
         $query->where(function ($q) use ($search) {

@@ -73,6 +73,99 @@ shadow-sm">
     </p>
 
 </div>
+
+{{-- Notification --}}
+<div
+    x-data="{ openNotif:false }"
+    class="relative">
+
+    <button
+        @click="openNotif=!openNotif"
+        class="relative
+        w-11
+        h-11
+        rounded-xl
+        bg-slate-100
+        hover:bg-slate-200
+        transition">
+
+        <i class="fa-regular fa-bell text-slate-700"></i>
+
+        @if(count($notifications))
+
+            <span
+                class="absolute
+                -top-1
+                -right-1
+                w-5
+                h-5
+                rounded-full
+                bg-red-500
+                text-white
+                text-xs
+                flex
+                items-center
+                justify-center">
+
+                {{ count($notifications) }}
+
+            </span>
+
+        @endif
+
+    </button>
+
+    <div
+        x-show="openNotif"
+        @click.away="openNotif=false"
+        x-transition
+        class="absolute
+        right-0
+        mt-3
+        w-80
+        bg-white
+        rounded-2xl
+        shadow-2xl
+        border
+        overflow-hidden
+        z-50">
+
+        <div class="px-5 py-4 font-bold border-b">
+
+            Notifications
+
+        </div>
+
+        @forelse($notifications as $item)
+
+            <a
+                href="{{ $item['url'] }}"
+                class="flex items-center gap-3 px-5 py-4 hover:bg-slate-100">
+
+                <i class="fa-solid {{ $item['icon'] }} text-fuchsia-600"></i>
+
+                <span class="text-sm">
+
+                    {{ $item['title'] }}
+
+                </span>
+
+            </a>
+
+        @empty
+
+            <div class="p-6 text-center text-slate-400">
+
+                No Notifications
+
+            </div>
+
+        @endforelse
+
+    </div>
+
+</div>
+
         {{-- Profile --}}
         <a
             href="{{ route('profile.edit') }}"

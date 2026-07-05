@@ -40,31 +40,50 @@ Add Asset
     </div>
 
     {{-- Search --}}
-    <div class="bg-white rounded-2xl shadow-sm p-5">
+<div class="bg-white rounded-2xl shadow-sm p-5">
 
-        <form method="GET">
+    <form method="GET">
 
-            <div class="flex gap-3">
+        <div class="flex flex-col md:flex-row gap-3">
 
-                <input
-                    type="text"
-                    name="search"
-                    value="{{ request('search') }}"
-                    placeholder="Search code, asset name or brand..."
-                    class="flex-1 rounded-xl border border-slate-300 px-4 py-3 focus:border-fuchsia-500 focus:ring-2 focus:ring-fuchsia-200 outline-none">
+            <input
+                type="text"
+                name="search"
+                value="{{ request('search') }}"
+                placeholder="Search code, asset name or brand..."
+                class="flex-1 rounded-xl border border-slate-300 px-4 py-3
+                focus:border-fuchsia-500
+                focus:ring-2
+                focus:ring-fuchsia-200
+                outline-none">
 
-                <button
-                    class="rounded-xl bg-slate-900 px-6 text-white hover:bg-slate-800">
+            <button
+                type="submit"
+                class="rounded-xl bg-slate-900 px-6 py-3 text-white hover:bg-slate-800 transition">
 
-                    Search
+                <i class="fa-solid fa-magnifying-glass mr-2"></i>
+                Search
 
-                </button>
+            </button>
 
-            </div>
+            @if(request()->filled('search'))
 
-        </form>
+            <a
+                href="{{ route('dashboard.inventory.index') }}"
+                class="rounded-xl bg-slate-200 px-6 py-3 text-slate-700 hover:bg-slate-300 transition text-center">
 
-    </div>
+                <i class="fa-solid fa-rotate-left mr-2"></i>
+                Reset
+
+            </a>
+
+            @endif
+
+        </div>
+
+    </form>
+
+</div>
 
     {{-- Table --}}
     <div class="bg-white rounded-2xl shadow-sm overflow-hidden">

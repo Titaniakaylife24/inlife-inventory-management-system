@@ -157,18 +157,24 @@
 
                 <thead class="bg-slate-100">
 
-                    <tr class="text-left">
+<tr class="text-left">
 
-                        <th class="px-6 py-4">Code</th>
-                        <th class="px-6 py-4">Asset</th>
-                        <th class="px-6 py-4">Category</th>
-                        <th class="px-6 py-4">Current Stock</th>
-                        <th class="px-6 py-4">Minimum</th>
-                        <th class="px-6 py-4">Status</th>
+    <th class="px-6 py-4">Code</th>
+    <th class="px-6 py-4">Asset</th>
+    <th class="px-6 py-4">Category</th>
+    <th class="px-6 py-4">Current Stock</th>
+    <th class="px-6 py-4">Minimum</th>
+    <th class="px-6 py-4">Status</th>
 
-                    </tr>
+    @if(auth()->user()->role->name == 'Admin')
+        <th class="px-6 py-4 text-center">
+            Action
+        </th>
+    @endif
 
-                </thead>
+</tr>
+
+</thead>
 
                 <tbody>
 
@@ -234,13 +240,34 @@
 
                         </td>
 
+                        @if(auth()->user()->role->name == 'Admin')
+
+<td class="px-6 py-4">
+
+    <div class="flex justify-center">
+
+        <a
+            href="{{ route('dashboard.inventory.edit', $product) }}"
+            class="w-10 h-10 rounded-lg bg-yellow-100 text-yellow-700 flex items-center justify-center hover:bg-yellow-200">
+
+            <i class="fa-solid fa-pen"></i>
+
+        </a>
+
+    </div>
+
+</td>
+
+@endif
+
                     </tr>
 
                 @empty
 
                     <tr>
 
-                        <td colspan="6" class="py-10 text-center text-slate-500">
+                        <td colspan="{{ auth()->user()->role->name == 'Admin' ? 7 : 6 }}"
+    class="py-10 text-center text-slate-500">
 
                             No inventory found.
 

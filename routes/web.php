@@ -13,6 +13,9 @@ use App\Http\Controllers\EmployeeDashboardController;
 use App\Http\Controllers\StockController;
 use App\Http\Controllers\BorrowRequestController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\LocationController;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -52,9 +55,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])
         ->name('dashboard');
 
-    Route::view('/dashboard/admin', 'dashboard.admin')
-        ->name('dashboard.admin');
-
     Route::get('/dashboard/staff',
     [DashboardController::class,'staff'])
     ->name('dashboard.staff');
@@ -71,6 +71,7 @@ Route::get('/dashboard/borrow', [BorrowController::class, 'index'])
 
 Route::get('/dashboard/borrow/{product}', [BorrowController::class, 'create'])
     ->name('borrow.create');
+
 
 Route::post('/dashboard/borrow', [BorrowController::class, 'store'])
     ->name('borrow.store');
@@ -117,15 +118,6 @@ Route::get('/dashboard/my-borrowings/{borrowing}',
     Route::get('/dashboard/inventory/{inventory}', [ProductController::class, 'show'])
         ->name('dashboard.inventory.show');
 
-// Category
-Route::get('/dashboard/category', function () {
-    return view('dashboard.staff.category');
-})->name('category.index');
-
-// Location
-Route::get('/dashboard/location', function () {
-    return view('dashboard.staff.location');
-})->name('location.index');
 
     });
 
@@ -168,6 +160,111 @@ Route::middleware(['auth','role:Staff'])->prefix('dashboard')->group(function ()
 
 Route::get('/report/export/pdf', [ReportController::class, 'exportPdf'])
     ->name('report.export.pdf');
+});
+
+Route::middleware(['auth','role:Admin'])
+->prefix('dashboard')
+->group(function () {
+
+    // Dashboard
+    Route::get('/admin',
+        [DashboardController::class,'admin'])
+        ->name('dashboard.admin');
+    
+    Route::resource('location', LocationController::class)
+    ->except('show');
+
+    Route::resource('users', UserController::class);
+
+    // Returns
+    Route::view('/returns','dashboard.admin.returns')
+        ->name('admin.returns.index');
+
+    // Category
+    Route::resource('category', CategoryController::class)
+        ->except('show');
+
+    // Location
+    // nanti
+    // Route::resource('location', LocationController::class)->except('show');
+
+    // Delete Inventory
+    Route::delete(
+        '/inventory/{inventory}',
+        [ProductController::class,'destroy']
+    )->name('dashboard.inventory.destroy');
+
+    Route::get(
+    '/borrow-request',
+    [BorrowRequestController::class,'index']
+)->name('borrow-request.index');
+
+Route::get(
+    '/borrow-request/{borrowing}',
+    [BorrowRequestController::class,'show']
+)->name('borrow-request.show');
+
+Route::put(
+    '/borrow-request/{borrowing}/approve',
+    [BorrowRequestController::class,'approve']
+)->name('borrow-request.approve');
+
+Route::put(
+    '/borrow-request/{borrowing}/reject',
+    [BorrowRequestController::class,'reject']
+)->name('borrow-request.reject');
+
+});
+
+Route::middleware(['auth'])
+->prefix('dashboard')
+->group(function () {
+
+    Route::get(
+        '/borrow-request',
+        [BorrowRequestController::class,'index']
+    )->name('borrow-request.index');
+
+    Route::get(
+        '/borrow-request/{borrowing}',
+        [BorrowRequestController::class,'show']
+    )->name('borrow-request.show');
+
+    Route::get('/report', [ReportController::class,'index'])
+    ->name('report.index');
+
+Route::get('/report/export/excel', [ReportController::class,'exportExcel'])
+    ->name('report.export.excel');
+
+Route::get('/report/export/pdf', [ReportController::class,'exportPdf'])
+    ->name('report.export.pdf');
+
+    // ADMIN ONLY
+    Route::middleware('role:Admin')->group(function(){
+
+        Route::patch(
+            '/borrow-request/{borrowing}/approve',
+            [BorrowRequestController::class,'approve']
+        )->name('borrow-request.approve');
+
+        Route::patch(
+            '/borrow-request/{borrowing}/reject',
+            [BorrowRequestController::class,'reject']
+        )->name('borrow-request.reject');
+
+    });
+
+});
+
+Route::middleware(['auth','role:Admin,Staff'])
+    ->prefix('dashboard')
+    ->group(function () {
+
+        Route::get(
+            '/stock-monitoring',
+            [StockController::class,'index']
+        )->name('stock.index');
+
 });
 
 require __DIR__.'/auth.php';

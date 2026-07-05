@@ -46,24 +46,52 @@ class ReportController extends Controller
             ->paginate(10)
             ->withQueryString();
 
-        return view('dashboard.staff.report.index', [
 
-            'products' => $products,
+if(auth()->user()->role->name == 'Admin'){
 
-            'categories' => Category::orderBy('name')->get(),
+    return view(
+        'dashboard.admin.report.index',
+        [
 
-            'totalAssets' => Product::count(),
+            'products'=>$products,
 
-            'availableAssets' => Product::where('status', 'Available')->count(),
+            'categories'=>Category::orderBy('name')->get(),
 
-            'borrowedAssets' => Product::where('status', 'Borrowed')->count(),
+            'totalAssets'=>Product::count(),
 
-            'lowStock' => Product::whereColumn('stock', '<=', 'minimum_stock')
-                                ->where('stock', '>', 0)
-                                ->count(),
+            'availableAssets'=>Product::where('status','Available')->count(),
 
-        ]);
-    }
+            'borrowedAssets'=>Product::where('status','Borrowed')->count(),
+
+            'lowStock'=>Product::whereColumn('stock','<=','minimum_stock')
+                ->where('stock','>',0)
+                ->count(),
+
+        ]
+    );
+
+}
+
+return view(
+    'dashboard.staff.report.index',
+    [
+
+        'products'=>$products,
+
+        'categories'=>Category::orderBy('name')->get(),
+
+        'totalAssets'=>Product::count(),
+
+        'availableAssets'=>Product::where('status','Available')->count(),
+
+        'borrowedAssets'=>Product::where('status','Borrowed')->count(),
+
+        'lowStock'=>Product::whereColumn('stock','<=','minimum_stock')
+            ->where('stock','>',0)
+            ->count(),
+
+    ]
+);    }
 
     public function exportExcel(Request $request)
 {
@@ -108,12 +136,16 @@ public function exportPdf(Request $request)
 
     $products = $query->orderBy('name')->get();
 
-    $pdf = Pdf::loadView(
-        'dashboard.staff.report.pdf',
-        compact('products')
-    )->setPaper('a4', 'landscape');
+    $view = auth()->user()->role->name == 'Admin'
+    ? 'dashboard.admin.report.pdf'
+    : 'dashboard.staff.report.pdf';
 
-    return $pdf->download(
+$pdf = Pdf::loadView(
+    $view,
+    compact('products')
+)->setPaper('a4','landscape');
+
+    return $pdf->stream(
         'Inventory_Report_' . now()->format('Y-m-d') . '.pdf'
     );
 }

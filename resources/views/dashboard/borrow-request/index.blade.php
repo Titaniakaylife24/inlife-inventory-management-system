@@ -4,251 +4,349 @@
 
 @section('content')
 
+@if(session('success'))
+<div class="mb-6 rounded-xl bg-green-100 border border-green-200 p-4 text-green-700">
+    {{ session('success') }}
+</div>
+@endif
+
+@if(session('error'))
+<div class="mb-6 rounded-xl bg-red-100 border border-red-200 p-4 text-red-700">
+    {{ session('error') }}
+</div>
+@endif
+
 <div class="space-y-8">
 
-<div>
+    {{-- Header --}}
+    <div>
 
-<h1 class="text-3xl font-black text-slate-800">
-Borrow Requests
-</h1>
+        <h1 class="text-3xl font-black text-slate-800">
+            Borrow Requests
+        </h1>
 
-<p class="text-slate-500 mt-2">
-Monitor all borrowing requests submitted by employees.
-</p>
+        <p class="text-slate-500 mt-2">
+            Monitor and manage employee borrowing requests.
+        </p>
 
-</div>
+    </div>
 
-<div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
+    {{-- Statistic --}}
+    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-5 gap-6">
 
-@include('components.dashboard.stat-card',[
-'title'=>'Total Requests',
-'value'=>$totalRequest,
-'icon'=>'📄',
-'color'=>'from-fuchsia-500 to-pink-600'
-])
+        @include('components.dashboard.stat-card',[
+            'title'=>'Total Requests',
+            'value'=>$totalRequest,
+            'icon'=>'📄',
+            'color'=>'from-fuchsia-500 to-pink-600'
+        ])
 
-@include('components.dashboard.stat-card',[
-'title'=>'Pending',
-'value'=>$pending,
-'icon'=>'🟡',
-'color'=>'from-yellow-400 to-amber-500'
-])
+        @include('components.dashboard.stat-card',[
+            'title'=>'Pending',
+            'value'=>$pending,
+            'icon'=>'🟡',
+            'color'=>'from-yellow-400 to-amber-500'
+        ])
 
-@include('components.dashboard.stat-card',[
-'title'=>'Approved',
-'value'=>$approved,
-'icon'=>'✅',
-'color'=>'from-green-500 to-emerald-600'
-])
+        @include('components.dashboard.stat-card',[
+            'title'=>'Approved',
+            'value'=>$approved,
+            'icon'=>'✅',
+            'color'=>'from-green-500 to-emerald-600'
+        ])
 
-@include('components.dashboard.stat-card',[
-'title'=>'Returned',
-'value'=>$returned,
-'icon'=>'🔄',
-'color'=>'from-blue-500 to-cyan-500'
-])
+        @include('components.dashboard.stat-card',[
+            'title'=>'Rejected',
+            'value'=>$rejected,
+            'icon'=>'❌',
+            'color'=>'from-red-500 to-rose-600'
+        ])
 
-</div>
+        @include('components.dashboard.stat-card',[
+            'title'=>'Returned',
+            'value'=>$returned,
+            'icon'=>'🔄',
+            'color'=>'from-blue-500 to-cyan-500'
+        ])
 
-<div class="bg-white rounded-3xl shadow p-6">
+    </div>
 
-<form method="GET">
+    {{-- Search --}}
+    <div class="bg-white rounded-3xl shadow p-6">
 
-<div class="grid lg:grid-cols-4 gap-4">
+        <form method="GET">
 
-<input
-type="text"
-name="search"
-value="{{ request('search') }}"
-placeholder="Search borrower or asset..."
-class="rounded-xl border-slate-300">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
 
-<select
-name="status"
-class="rounded-xl border-slate-300">
+        {{-- Search --}}
+        <input
+            type="text"
+            name="search"
+            value="{{ request('search') }}"
+            placeholder="Search borrower, code or asset..."
+            class="w-full rounded-xl border-slate-300 focus:border-fuchsia-500 focus:ring-fuchsia-500">
 
-<option value="">All Status</option>
+        {{-- Status --}}
+        <select
+            name="status"
+            class="w-full rounded-xl border-slate-300 focus:border-fuchsia-500 focus:ring-fuchsia-500">
 
-<option value="Pending"
-@selected(request('status')=='Pending')>
+            <option value="">All Status</option>
 
-Pending
+            <option value="Pending"
+                @selected(request('status')=='Pending')>
+                Pending
+            </option>
 
-</option>
+            <option value="Approved"
+                @selected(request('status')=='Approved')>
+                Approved
+            </option>
 
-<option value="Approved"
-@selected(request('status')=='Approved')>
+            <option value="Rejected"
+                @selected(request('status')=='Rejected')>
+                Rejected
+            </option>
 
-Approved
+            <option value="Returned"
+                @selected(request('status')=='Returned')>
+                Returned
+            </option>
 
-</option>
+        </select>
 
-<option value="Returned"
-@selected(request('status')=='Returned')>
+        {{-- Search Button --}}
+        <button
+            type="submit"
+            class="w-full rounded-xl bg-gradient-to-r
+                   from-fuchsia-600 to-purple-600
+                   text-white font-semibold
+                   hover:opacity-90 transition">
 
-Returned
+            Search
 
-</option>
+        </button>
 
-</select>
+        {{-- Reset Button --}}
+        <a href="{{ route('borrow-request.index') }}"
+           class="w-full rounded-xl bg-slate-200
+                  hover:bg-slate-300
+                  transition
+                  flex items-center justify-center
+                  font-semibold text-slate-700">
 
-<button
-class="rounded-xl bg-fuchsia-600 text-white font-semibold">
+            Reset
 
-Search
+        </a>
 
-</button>
-
-<a
-href="{{ route('borrow-request.index') }}"
-class="rounded-xl bg-slate-200 flex items-center justify-center">
-
-Reset
-
-</a>
-
-</div>
+    </div>
 
 </form>
 
-</div>
+    </div>
 
-<div class="bg-white rounded-3xl shadow overflow-hidden">
+    {{-- Table --}}
+    <div class="bg-white rounded-3xl shadow overflow-hidden">
 
-<div class="overflow-x-auto">
+        <div class="overflow-x-auto">
 
-<table class="min-w-full">
+            <table class="min-w-full">
 
-<thead class="bg-slate-100">
+                <thead class="bg-slate-100">
 
-<tr>
+                <tr class="text-left">
 
-<th class="px-6 py-4">Code</th>
+                    <th class="px-6 py-4">Code</th>
 
-<th class="px-6 py-4">Borrower</th>
+                    <th class="px-6 py-4">Borrower</th>
 
-<th class="px-6 py-4">Asset</th>
+                    <th class="px-6 py-4">Asset</th>
 
-<th class="px-6 py-4">Qty</th>
+                    <th class="px-6 py-4 text-center">Qty</th>
 
-<th class="px-6 py-4">Borrow Date</th>
+                    <th class="px-6 py-4">Borrow Date</th>
 
-<th class="px-6 py-4">Status</th>
+                    <th class="px-6 py-4">Status</th>
 
-<th class="px-6 py-4 text-center">Action</th>
+                    <th class="px-6 py-4 text-center">Action</th>
 
-</tr>
+                </tr>
 
-</thead>
+                </thead>
 
-<tbody>
+                <tbody>
 
-@forelse($borrowings as $borrow)
+                @forelse($borrowings as $borrow)
 
-<tr class="border-t hover:bg-slate-50">
+                <tr class="border-t hover:bg-slate-50">
 
-<td class="px-6 py-4">
+                    <td class="px-6 py-4 font-semibold">
 
-{{ $borrow->borrow_code }}
+                        {{ $borrow->borrow_code }}
 
-</td>
+                    </td>
 
-<td class="px-6 py-4">
+                    <td class="px-6 py-4">
 
-{{ $borrow->borrower_name }}
+                        <div class="font-semibold">
 
-</td>
+                            {{ $borrow->borrower_name }}
 
-<td class="px-6 py-4">
+                        </div>
 
-{{ $borrow->product->name }}
+                        <div class="text-sm text-slate-500">
 
-</td>
+                            {{ $borrow->user->email }}
 
-<td class="px-6 py-4">
+                        </div>
 
-{{ $borrow->quantity }}
+                    </td>
 
-</td>
+                    <td class="px-6 py-4">
 
-<td class="px-6 py-4">
+                        {{ $borrow->product->name }}
 
-{{ \Carbon\Carbon::parse($borrow->borrow_date)->format('d M Y') }}
+                    </td>
 
-</td>
+                    <td class="px-6 py-4 text-center font-bold">
 
-<td class="px-6 py-4">
+                        {{ $borrow->quantity }}
 
-@if($borrow->status=="Pending")
+                    </td>
 
-<span class="px-3 py-1 rounded-full bg-yellow-100 text-yellow-700 text-sm">
+                    <td class="px-6 py-4">
 
-Pending
+                        {{ \Carbon\Carbon::parse($borrow->borrow_date)->format('d M Y') }}
 
-</span>
+                    </td>
 
-@elseif($borrow->status=="Approved")
+                    {{-- Status --}}
+                    <td class="px-6 py-4">
 
-<span class="px-3 py-1 rounded-full bg-green-100 text-green-700 text-sm">
+                        @switch($borrow->status)
 
-Approved
+                            @case('Pending')
+                            <span class="px-3 py-1 rounded-full bg-yellow-100 text-yellow-700 text-sm">
+                                Pending
+                            </span>
+                            @break
 
-</span>
+                            @case('Approved')
+                            <span class="px-3 py-1 rounded-full bg-green-100 text-green-700 text-sm">
+                                Approved
+                            </span>
+                            @break
 
-@else
+                            @case('Rejected')
+                            <span class="px-3 py-1 rounded-full bg-red-100 text-red-700 text-sm">
+                                Rejected
+                            </span>
+                            @break
 
-<span class="px-3 py-1 rounded-full bg-blue-100 text-blue-700 text-sm">
+                            @case('Returned')
+                            <span class="px-3 py-1 rounded-full bg-blue-100 text-blue-700 text-sm">
+                                Returned
+                            </span>
+                            @break
 
-Returned
+                        @endswitch
 
-</span>
+                    </td>
 
-@endif
+                    {{-- Action --}}
+                    <td class="px-6 py-4">
 
-</td>
+                        <div class="flex justify-center gap-2">
 
-<td class="px-6 py-4 text-center">
+                            {{-- Detail --}}
+                            <a
+                                href="{{ route('borrow-request.show',$borrow) }}"
+                                class="w-10 h-10 rounded-lg bg-sky-100 text-sky-600 flex items-center justify-center hover:bg-sky-200">
 
-<button
-disabled
-class="px-4 py-2 rounded-lg bg-slate-200 text-slate-500 cursor-not-allowed">
+                                <i class="fa-solid fa-eye"></i>
 
-Waiting Admin
+                            </a>
 
-</button>
+                            {{-- ADMIN --}}
+                            @if(auth()->user()->role->name=='Admin')
 
-</td>
+                                @if($borrow->status=='Pending')
 
-</tr>
+                                {{-- Approve --}}
+                                <form
+                                    method="POST"
+                                    action="{{ route('borrow-request.approve',$borrow) }}">
 
-@empty
+                                    @csrf
+                                    @method('PATCH')
 
-<tr>
+                                    <button
+                                        onclick="return confirm('Approve this request?')"
+                                        class="w-10 h-10 rounded-lg bg-green-100 text-green-700 hover:bg-green-200">
 
-<td colspan="7"
-class="py-10 text-center text-slate-500">
+                                        <i class="fa-solid fa-check"></i>
 
-No borrow requests found.
+                                    </button>
 
-</td>
+                                </form>
 
-</tr>
+                                {{-- Reject --}}
+                                <form
+                                    method="POST"
+                                    action="{{ route('borrow-request.reject',$borrow) }}">
 
-@endforelse
+                                    @csrf
+                                    @method('PATCH')
 
-</tbody>
+                                    <button
+                                        onclick="return confirm('Reject this request?')"
+                                        class="w-10 h-10 rounded-lg bg-red-100 text-red-600 hover:bg-red-200">
 
-</table>
+                                        <i class="fa-solid fa-xmark"></i>
 
-</div>
+                                    </button>
 
-<div class="p-5 border-t">
+                                </form>
 
-{{ $borrowings->links() }}
+                                @endif
 
-</div>
+                            @endif
 
-</div>
+                        </div>
+
+                    </td>
+
+                </tr>
+
+                @empty
+
+                <tr>
+
+                    <td
+                        colspan="7"
+                        class="py-10 text-center text-slate-500">
+
+                        No borrow requests found.
+
+                    </td>
+
+                </tr>
+
+                @endforelse
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        <div class="p-5 border-t">
+
+            {{ $borrowings->links() }}
+
+        </div>
+
+    </div>
 
 </div>
 
