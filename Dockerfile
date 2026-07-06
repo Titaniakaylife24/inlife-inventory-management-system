@@ -1,11 +1,12 @@
 FROM php:8.2-apache
 
-# Install dependencies
+# Install system dependencies
 RUN apt-get update && apt-get install -y \
     git \
     unzip \
     zip \
     curl \
+    npm \
     libzip-dev \
     libpng-dev \
     libjpeg62-turbo-dev \
@@ -13,9 +14,11 @@ RUN apt-get update && apt-get install -y \
     libonig-dev \
     libxml2-dev \
     libicu-dev \
-    default-mysql-client \
-    npm \
-    && docker-php-ext-install pdo pdo_mysql zip intl
+    && docker-php-ext-install \
+    pdo \
+    pdo_mysql \
+    zip \
+    intl
 
 # Enable Apache Rewrite
 RUN a2enmod rewrite
@@ -27,19 +30,25 @@ WORKDIR /var/www/html
 
 COPY . .
 
+# Install PHP packages
 RUN composer install --no-dev --optimize-autoloader
 
+# Install Node packages
 RUN npm install
 
+# Build Vite
 RUN npm run build
 
-RUN cp .env.example .env || true
+# Laravel permissions
+RUN mkdir -p storage/framework/{cache,sessions,views}
+RUN chmod -R 775 storage bootstrap/cache
 
-RUN php artisan storage:link || true
+# Apache public folder
+ENV APACHE_DOCUMENT_ROOT /var/www/html/public
 
-RUN chown -R www-data:www-data storage bootstrap/cache
-
-RUN sed -ri -e 's!/var/www/html!/var/www/html/public!g' /etc/apache2/sites-available/*.conf
+RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' \
+/etc/apache2/sites-available/*.conf \
+/etc/apache2/apache2.conf
 
 EXPOSE 80
 
