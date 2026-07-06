@@ -12,29 +12,39 @@ use Illuminate\Support\Facades\Auth;
 class ProductController extends Controller
 {
     public function index(Request $request)
-    {
-        $search = $request->search;
+{
+    $search = $request->search;
 
-        $products = Product::with(['category', 'location'])
-            ->when($search, function ($query) use ($search) {
-                $query->where('code', 'like', "%{$search}%")
-                      ->orWhere('name', 'like', "%{$search}%")
-                      ->orWhere('brand', 'like', "%{$search}%");
-            })
-            ->latest()
-            ->paginate(10)
-            ->withQueryString();
+    $products = Product::with(['category','location'])
+        ->when($search,function($query) use($search){
 
-        return view('dashboard.inventory.index', compact('products', 'search'));
-    }
+            $query->where('code','like',"%{$search}%")
+                ->orWhere('name','like',"%{$search}%")
+                ->orWhere('brand','like',"%{$search}%");
+
+        })
+        ->latest()
+        ->paginate(10)
+        ->withQueryString();
+
+    $view = auth()->user()->role->name == 'Manager'
+        ? 'dashboard.manager.inventory.index'
+        : 'dashboard.inventory.index';
+
+    return view($view, compact('products','search'));
+}
 
     public function create()
-    {
-        return view('dashboard.inventory.create', [
-            'categories' => Category::orderBy('name')->get(),
-            'locations'  => Location::orderBy('name')->get(),
-        ]);
+{
+    if(!in_array(auth()->user()->role->name,['Admin','Staff'])){
+        abort(403);
     }
+
+    return view('dashboard.inventory.create',[
+        'categories'=>Category::orderBy('name')->get(),
+        'locations'=>Location::orderBy('name')->get(),
+    ]);
+}
 
     public function store(Request $request)
     {
@@ -68,25 +78,50 @@ class ProductController extends Controller
     }
 
     public function show(Product $inventory)
-    {
-        $inventory->load(['category', 'location']);
+{
+    $inventory->load([
+        'category',
+        'location'
+    ]);
 
-        return view('dashboard.inventory.show', [
-            'product' => $inventory
-        ]);
+    if(auth()->user()->role->name == 'Manager'){
+
+        return view(
+            'dashboard.manager.inventory.show',
+            [
+                'product'=>$inventory
+            ]
+        );
+
     }
+
+    return view(
+        'dashboard.inventory.show',
+        [
+            'product'=>$inventory
+        ]
+    );
+}
 
     public function edit(Product $inventory)
-    {
-        return view('dashboard.inventory.edit', [
-            'product'    => $inventory,
-            'categories' => Category::orderBy('name')->get(),
-            'locations'  => Location::orderBy('name')->get(),
-        ]);
+{
+    if(!in_array(auth()->user()->role->name,['Admin','Staff'])){
+        abort(403);
     }
+
+    return view('dashboard.inventory.edit',[
+        'product'=>$inventory,
+        'categories'=>Category::orderBy('name')->get(),
+        'locations'=>Location::orderBy('name')->get(),
+    ]);
+}
 
     public function update(Request $request, Product $inventory)
     {
+
+        if(!in_array(auth()->user()->role->name,['Admin','Staff'])){
+    abort(403);
+}
         $validated = $request->validate([
             'category_id'   => 'required|exists:categories,id',
             'location_id'   => 'required|exists:locations,id',

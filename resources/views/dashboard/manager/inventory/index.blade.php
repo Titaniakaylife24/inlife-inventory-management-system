@@ -23,7 +23,21 @@
             <p class="text-slate-500 mt-1">
                 Manage company assets and inventory.
             </p>
+            
         </div>
+
+        <span
+class="ml-3
+text-xs
+bg-indigo-100
+text-indigo-700
+px-3
+py-1
+rounded-full">
+
+Read Only
+
+</span>
 
         @if(in_array(auth()->user()->role->name, ['Admin','Staff']))
 
@@ -69,7 +83,7 @@ Add Asset
             @if(request()->filled('search'))
 
             <a
-                href="{{ route('dashboard.inventory.index') }}"
+                href="{{ route('manager.inventory.index') }}"
                 class="rounded-xl bg-slate-200 px-6 py-3 text-slate-700 hover:bg-slate-300 transition text-center">
 
                 <i class="fa-solid fa-rotate-left mr-2"></i>
@@ -278,49 +292,23 @@ font-semibold">
                     {{-- Action --}}
                     <td class="px-6 py-4">
 
-<div class="flex justify-center gap-2">
+<div class="flex justify-center">
 
-    {{-- Semua role --}}
-    <a href="{{ route('dashboard.inventory.show',$product) }}"
-    class="w-10 h-10 rounded-lg bg-sky-100 text-sky-600 flex items-center justify-center hover:bg-sky-200">
+<a
+href="{{ route('manager.inventory.show',$product) }}"
+class="w-10
+h-10
+rounded-lg
+bg-sky-100
+text-sky-600
+flex
+items-center
+justify-center
+hover:bg-sky-200">
 
-        <i class="fa-solid fa-eye"></i>
+<i class="fa-solid fa-eye"></i>
 
-    </a>
-
-    {{-- Admin & Staff boleh edit --}}
-    @if(in_array(auth()->user()->role->name,['Admin','Staff']))
-
-    <a href="{{ route('dashboard.inventory.edit',$product) }}"
-    class="w-10 h-10 rounded-lg bg-yellow-100 text-yellow-700 flex items-center justify-center hover:bg-yellow-200">
-
-        <i class="fa-solid fa-pen"></i>
-
-    </a>
-
-    @endif
-
-    {{-- HANYA ADMIN boleh delete --}}
-    @if(auth()->user()->role->name == 'Admin')
-
-    <form
-    action="{{ route('dashboard.inventory.destroy',$product) }}"
-    method="POST">
-
-        @csrf
-        @method('DELETE')
-
-        <button
-        onclick="return confirm('Delete this asset?')"
-        class="w-10 h-10 rounded-lg bg-red-100 text-red-600 hover:bg-red-200">
-
-            <i class="fa-solid fa-trash"></i>
-
-        </button>
-
-    </form>
-
-    @endif
+</a>
 
 </div>
 

@@ -121,25 +121,25 @@ shadow-xl">
         </a>
 
     {{-- Manager --}}
-    @elseif($role == 'Manager')
+@elseif($role == 'Manager')
 
-        <a
-            href="{{ route('report.index') }}"
-            class="px-6 py-3 rounded-xl bg-white text-fuchsia-700 font-semibold">
+    <a
+        href="{{ route('manager.report.index') }}"
+        class="px-6 py-3 rounded-xl bg-white text-fuchsia-700 font-semibold shadow-lg hover:scale-105 transition">
 
-            View Reports →
+        Reports →
 
-        </a>
+    </a>
 
-        <a
-            href="{{ route('dashboard.inventory.index') }}"
-            class="px-6 py-3 rounded-xl border border-white/30 bg-white/10">
+    <a
+        href="{{ route('manager.stock.index') }}"
+        class="px-6 py-3 rounded-xl border border-white/30 bg-white/10 hover:bg-white/20 transition">
 
-            Inventory
+        Stock Monitoring
 
-        </a>
+    </a>
 
-    @endif
+@endif
 
 </div>
 

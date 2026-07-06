@@ -52,19 +52,19 @@
                 <div class="flex flex-wrap gap-4 mt-8">
 
     <div class="card-inlife">
-        <p class="text-sm text-slate-500">Total Assets</p>
-        <h3 class="font-bold text-2xl">128+</h3>
-    </div>
+    <p class="text-sm text-slate-500">Total Assets</p>
+    <h3 class="font-bold text-2xl">{{ $totalAssets }}</h3>
+</div>
 
     <div class="card-inlife">
-        <p class="text-sm text-slate-500">Borrowed</p>
-        <h3 class="font-bold text-2xl">34</h3>
-    </div>
+    <p class="text-sm text-slate-500">Borrowed</p>
+    <h3 class="font-bold text-2xl">{{ $borrowed }}</h3>
+</div>
 
     <div class="card-inlife">
-        <p class="text-sm text-slate-500">Low Stock</p>
-        <h3 class="font-bold text-2xl">8</h3>
-    </div>
+    <p class="text-sm text-slate-500">Low Stock</p>
+    <h3 class="font-bold text-2xl">{{ $lowStock }}</h3>
+</div>
 
 </div>
                 <!-- Button -->
@@ -213,12 +213,9 @@
 
                                 <p>Total Assets</p>
 
-                                <h2
-                                    class="text-4xl font-bold mt-2">
-
-                                    128
-
-                                </h2>
+                                <h2 class="text-4xl font-bold mt-2">
+    {{ $totalAssets }}
+</h2>
 
                             </div>
 
@@ -227,12 +224,9 @@
 
                                 <p>Borrowed</p>
 
-                                <h2
-                                    class="text-4xl font-bold mt-2">
-
-                                    16
-
-                                </h2>
+                                <h2 class="text-4xl font-bold mt-2">
+    {{ $borrowed }}
+</h2>
 
                             </div>
 
@@ -241,12 +235,9 @@
 
                                 <p>Categories</p>
 
-                                <h2
-                                    class="text-4xl font-bold mt-2">
-
-                                    12
-
-                                </h2>
+                                <h2 class="text-4xl font-bold mt-2">
+    {{ $categories }}
+</h2>
 
                             </div>
 
@@ -255,12 +246,9 @@
 
                                 <p>Locations</p>
 
-                                <h2
-                                    class="text-4xl font-bold mt-2">
-
-                                    8
-
-                                </h2>
+                                <h2 class="text-4xl font-bold mt-2">
+    {{ $locations }}
+</h2>
 
                             </div>
 
@@ -276,20 +264,45 @@
 
     <div class="space-y-4">
 
-        <div class="flex justify-between">
-            <span>Dell Laptop</span>
-            <span class="text-green-500 font-medium">Available</span>
-        </div>
+        @foreach($latestProducts as $product)
 
-        <div class="flex justify-between">
-            <span>Epson Printer</span>
-            <span class="text-yellow-500 font-medium">Borrowed</span>
-        </div>
+<div class="flex justify-between">
 
-        <div class="flex justify-between">
-            <span>Projector Sony</span>
-            <span class="text-red-500 font-medium">Maintenance</span>
-        </div>
+    <span>
+
+        {{ $product->name }}
+
+    </span>
+
+    @if($product->status == 'Available')
+
+        <span class="text-green-500 font-medium">
+
+            Available
+
+        </span>
+
+    @elseif($product->status == 'Borrowed')
+
+        <span class="text-yellow-500 font-medium">
+
+            Borrowed
+
+        </span>
+
+    @else
+
+        <span class="text-red-500 font-medium">
+
+            Maintenance
+
+        </span>
+
+    @endif
+
+</div>
+
+@endforeach
 
     </div>
 

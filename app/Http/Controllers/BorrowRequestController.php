@@ -51,21 +51,35 @@ class BorrowRequestController extends Controller
             ->paginate(10)
             ->withQueryString();
 
-        return view('dashboard.borrow-request.index', [
+        $data = [
 
-            'borrowings' => $borrowings,
+    'borrowings' => $borrowings,
 
-            'totalRequest' => Borrowing::count(),
+    'totalRequest' => Borrowing::count(),
 
-            'pending' => Borrowing::where('status', 'Pending')->count(),
+    'pending' => Borrowing::where('status','Pending')->count(),
 
-            'approved' => Borrowing::where('status', 'Approved')->count(),
+    'approved' => Borrowing::where('status','Approved')->count(),
 
-            'rejected' => Borrowing::where('status', 'Rejected')->count(),
+    'rejected' => Borrowing::where('status','Rejected')->count(),
 
-            'returned' => Borrowing::where('status', 'Returned')->count(),
+    'returned' => Borrowing::where('status','Returned')->count(),
 
-        ]);
+];
+
+if(auth()->user()->role->name == 'Manager'){
+
+    return view(
+        'dashboard.manager.borrow-request.index',
+        $data
+    );
+
+}
+
+return view(
+    'dashboard.borrow-request.index',
+    $data
+);
     }
 
     /*
@@ -77,15 +91,26 @@ class BorrowRequestController extends Controller
     public function show(Borrowing $borrowing)
     {
         $borrowing->load([
-            'user',
-            'product',
-            'approver'
+        'user',
+        'product.category',
+        'product.location',
+        'approver'
         ]);
 
+        if(auth()->user()->role->name == 'Manager'){
+
         return view(
-            'dashboard.borrow-request.show',
+            'dashboard.manager.borrow-request.show',
             compact('borrowing')
         );
+
+    }
+
+    return view(
+        'dashboard.borrow-request.show',
+        compact('borrowing')
+    );
+
     }
 
     /*

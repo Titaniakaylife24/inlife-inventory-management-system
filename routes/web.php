@@ -16,6 +16,10 @@ use App\Http\Controllers\ReportController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ManagerDashboardController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\GuestInventoryController;
+use App\Http\Controllers\GuestReportController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,15 +27,16 @@ use App\Http\Controllers\UserController;
 |--------------------------------------------------------------------------
 */
 
-Route::get('/', fn() => view('home'))->name('home');
+Route::get('/', [HomeController::class, 'index'])
+    ->name('home');
 
-Route::get('/inventory', fn() => view('pages.inventory'))
+Route::get('/inventory', [GuestInventoryController::class,'index'])
     ->name('inventory');
 
 Route::get('/roles', fn() => view('roles.index'))
     ->name('roles');
 
-Route::get('/reports', fn() => view('reports.index'))
+Route::get('/reports', [GuestReportController::class,'index'])
     ->name('reports');
 
 Route::get('/about', fn() => view('about.index'))
@@ -59,8 +64,6 @@ Route::middleware('auth')->group(function () {
     [DashboardController::class,'staff'])
     ->name('dashboard.staff');
 
-    Route::view('/dashboard/manager', 'dashboard.manager')
-        ->name('dashboard.manager');
 
     Route::get('/dashboard/employee',
     [EmployeeDashboardController::class,'index'])
@@ -264,6 +267,85 @@ Route::middleware(['auth','role:Admin,Staff'])
             '/stock-monitoring',
             [StockController::class,'index']
         )->name('stock.index');
+
+});
+
+Route::middleware(['auth','role:Manager'])
+->prefix('dashboard/manager')
+->group(function(){
+
+    /*
+    |--------------------------------------------------------------------------
+    | Dashboard
+    |--------------------------------------------------------------------------
+    */
+
+    Route::get(
+        '/manager',
+        [ManagerDashboardController::class,'index']
+    )->name('dashboard.manager');
+
+    /*
+    |--------------------------------------------------------------------------
+    | Inventory
+    |--------------------------------------------------------------------------
+    */
+
+    Route::get(
+    '/inventory',
+    [ProductController::class,'index']
+)->name('manager.inventory.index');
+
+    Route::get(
+        '/inventory/{inventory}',
+        [ProductController::class,'show']
+    )->name('manager.inventory.show');
+
+    /*
+    |--------------------------------------------------------------------------
+    | Borrow Request
+    |--------------------------------------------------------------------------
+    */
+
+     Route::get('/borrow-request',
+        [BorrowRequestController::class,'index'])
+        ->name('manager.borrow-request.index');
+
+    Route::get('/borrow-request/{borrowing}',
+        [BorrowRequestController::class,'show'])
+        ->name('manager.borrow-request.show');
+
+    /*
+    |--------------------------------------------------------------------------
+    | Stock
+    |--------------------------------------------------------------------------
+    */
+
+    Route::get(
+        '/stock-monitoring',
+        [StockController::class,'index']
+    )->name('manager.stock.index');
+
+    /*
+    |--------------------------------------------------------------------------
+    | Report
+    |--------------------------------------------------------------------------
+    */
+
+    Route::get(
+        '/report',
+        [ReportController::class,'index']
+    )->name('manager.report.index');
+
+    Route::get(
+        '/report/export/pdf',
+        [ReportController::class,'exportPdf']
+    )->name('manager.report.pdf');
+
+    Route::get(
+        '/report/export/excel',
+        [ReportController::class,'exportExcel']
+    )->name('manager.report.excel');
 
 });
 

@@ -16,49 +16,109 @@
         {{-- Summary Cards --}}
         <div class="grid md:grid-cols-4 gap-6 mt-14">
 
-            @foreach([
-                ['128', 'Total Assets'],
-                ['89', 'Available'],
-                ['31', 'Borrowed'],
-                ['8', 'Maintenance']
-            ] as [$number, $label])
+    <div class="card-inlife text-center">
+        <h2 class="text-4xl font-black text-pink-500">
+            {{ $totalAssets }}
+        </h2>
+        <p>Total Assets</p>
+    </div>
 
-                <div class="card-inlife text-center">
-                    <h2 class="text-4xl font-black text-pink-500">
-                        {{ $number }}
-                    </h2>
-                    <p class="mt-2 text-slate-500">{{ $label }}</p>
-                </div>
+    <div class="card-inlife text-center">
+        <h2 class="text-4xl font-black text-green-500">
+            {{ $available }}
+        </h2>
+        <p>Available</p>
+    </div>
 
-            @endforeach
+    <div class="card-inlife text-center">
+        <h2 class="text-4xl font-black text-yellow-500">
+            {{ $borrowed }}
+        </h2>
+        <p>Borrowed</p>
+    </div>
 
-        </div>
+    <div class="card-inlife text-center">
+        <h2 class="text-4xl font-black text-red-500">
+            {{ $maintenance }}
+        </h2>
+        <p>Maintenance</p>
+    </div>
+
+</div>
 
         {{-- Asset Cards --}}
         <div class="grid md:grid-cols-4 gap-6 mt-14">
 
-            @foreach([
-                ['Dell Laptop', 'Available'],
-                ['Epson Printer', 'Borrowed'],
-                ['Sony Projector', 'Maintenance'],
-                ['Office Chair', 'Available']
-            ] as [$name, $status])
+@foreach($products as $product)
 
-                <div class="card-inlife">
-                    <div class="h-40 rounded-2xl bg-gradient-to-r from-pink-200 to-purple-200 mb-4"></div>
+<div class="card-inlife">
 
-                    <h3 class="font-semibold text-lg">
-                        {{ $name }}
-                    </h3>
+    @if($product->image)
 
-                    <span class="text-sm text-pink-500">
-                        {{ $status }}
-                    </span>
-                </div>
+        <img
+            src="{{ asset('storage/'.$product->image) }}"
+            class="w-full h-40 object-cover rounded-2xl mb-4">
 
-            @endforeach
+    @else
+
+        <div
+            class="h-40 rounded-2xl bg-gradient-to-r from-pink-200 to-purple-200 flex items-center justify-center mb-4">
+
+            <i class="fa-solid fa-box text-5xl text-white"></i>
 
         </div>
+
+    @endif
+
+    <h3 class="font-semibold text-lg">
+
+        {{ $product->name }}
+
+    </h3>
+
+    <p class="text-slate-500 text-sm">
+
+        {{ $product->category->name }}
+
+    </p>
+
+    @if($product->status=='Available')
+
+        <span class="text-green-500 font-semibold">
+
+            Available
+
+        </span>
+
+    @elseif($product->status=='Borrowed')
+
+        <span class="text-yellow-500 font-semibold">
+
+            Borrowed
+
+        </span>
+
+    @else
+
+        <span class="text-red-500 font-semibold">
+
+            Maintenance
+
+        </span>
+
+    @endif
+
+</div>
+
+@endforeach
+
+</div>
+
+<div class="mt-10">
+
+    {{ $products->links() }}
+
+</div>
 
     </div>
 

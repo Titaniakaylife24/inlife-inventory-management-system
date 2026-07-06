@@ -59,6 +59,8 @@ class BorrowController extends Controller
 
             'notes'=>$request->notes,
 
+            'is_read' => false,
+
             'status'=>'Pending'
 
         ]);

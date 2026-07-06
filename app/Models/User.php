@@ -55,4 +55,9 @@ public function approvedBorrowings()
 {
     return $this->hasMany(Borrowing::class, 'approved_by');
 }
+
+public function notifications()
+{
+    return $this->hasMany(Notification::class);
+}
 }
