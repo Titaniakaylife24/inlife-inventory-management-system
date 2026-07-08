@@ -27,8 +27,7 @@ use App\Http\Controllers\GuestReportController;
 |--------------------------------------------------------------------------
 */
 
-Route::get('/', [HomeController::class, 'index'])
-    ->name('home');
+Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::get('/inventory', [GuestInventoryController::class,'index'])
     ->name('inventory');
