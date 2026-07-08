@@ -1,15 +1,11 @@
 # 📦 InLife Inventory Management System
 
 <p align="center">
-
-<img src="public/images/logo_inlife.png" width="130">
-
+  <img src="public/images/logo_inlife.png" width="130" alt="InLife Logo">
 </p>
 
 <p align="center">
-
-Modern Inventory Management System built with Laravel 12, TailwindCSS and MySQL.
-
+Modern Inventory Management System built with Laravel 12, Tailwind CSS, and MySQL.
 </p>
 
 <p align="center">
@@ -22,23 +18,20 @@ Modern Inventory Management System built with Laravel 12, TailwindCSS and MySQL.
 
 </p>
 
+<p align="center">
+🚀 <b>Live Demo</b><br>
+https://inlife-inventory-management-system-production.up.railway.app/
+</p>
+
 ---
 
 # 📖 About
 
-InLife Inventory Management System (IMS) adalah aplikasi berbasis web yang digunakan untuk membantu perusahaan mengelola seluruh aset inventaris secara digital.
+InLife Inventory Management System (IMS) is a web-based inventory management application developed to help organizations manage their inventory assets digitally and efficiently.
 
-Sistem mendukung:
+The system provides role-based access for Employees, Staff, Managers, and Administrators to manage inventory, monitor stock, process borrowing requests, generate reports, and visualize data through an interactive dashboard.
 
-- Asset Management
-- Borrowing Management
-- Stock Monitoring
-- Real-time Dashboard
-- Role Management
-- Reporting
-- Authentication
-
-Seluruh data ditampilkan secara **real-time** langsung dari database MySQL.
+Built using **Laravel 12**, **Tailwind CSS**, **MySQL**, and **Chart.js**, the application delivers a modern, responsive, and user-friendly experience.
 
 ---
 
@@ -46,11 +39,11 @@ Seluruh data ditampilkan secara **real-time** langsung dari database MySQL.
 
 ## 🌐 Landing Page
 
-- Modern UI
+- Modern responsive UI
 - Hero Section
 - Inventory Overview
-- Roles Overview
-- Reports Overview
+- Role Overview
+- Report Overview
 - About Company
 
 ---
@@ -61,18 +54,20 @@ Seluruh data ditampilkan secara **real-time** langsung dari database MySQL.
 - Register
 - Forgot Password
 - Remember Me
+- Role-based Authentication
 
 ---
 
 ## 👤 Admin
 
 - Dashboard
-- Product Management
+- Asset Management
 - Category Management
 - Employee Management
-- Borrowing Management
 - User Management
+- Borrowing Management
 - Reports
+- Stock Monitoring
 
 ---
 
@@ -81,8 +76,16 @@ Seluruh data ditampilkan secara **real-time** langsung dari database MySQL.
 - Dashboard Analytics
 - Inventory Monitoring
 - Borrowing Monitoring
-- Reports
 - Employee Monitoring
+- Reports
+
+---
+
+## 👨‍💻 Staff
+
+- Dashboard
+- Borrowing Management
+- Asset Monitoring
 
 ---
 
@@ -91,13 +94,13 @@ Seluruh data ditampilkan secara **real-time** langsung dari database MySQL.
 - Dashboard
 - Borrow Asset
 - Borrow History
-- Profile
+- Profile Management
 
 ---
 
 # 📊 Dashboard
 
-Dashboard menampilkan data secara realtime:
+The dashboard provides real-time information including:
 
 - Total Assets
 - Available Assets
@@ -105,8 +108,23 @@ Dashboard menampilkan data secara realtime:
 - Maintenance Assets
 - Categories
 - Employees
-- Charts
+- Charts & Analytics
 - Recent Activities
+
+---
+
+# 🔑 Demo Accounts
+
+| Role | Email | Password |
+|------|-------|----------|
+| Employee | employee@inlife.id | employee123 |
+| Staff | staff@inlife.id | staff123 |
+| Admin | admin@inlife.id | admin123 |
+| Manager | manager@inlife.id | manager123 |
+
+> **Note**
+>
+> All newly registered users are automatically assigned the **Employee** role.
 
 ---
 
@@ -116,7 +134,7 @@ Dashboard menampilkan data secara realtime:
 |------------|---------|
 | Laravel | 12 |
 | PHP | 8.2 |
-| TailwindCSS | 4 |
+| Tailwind CSS | 4 |
 | Blade | Latest |
 | MySQL | 8 |
 | Chart.js | Latest |
@@ -138,7 +156,7 @@ Dashboard menampilkan data secara realtime:
 
 ## Relationships
 
-```
+```text
 Role
  │
  └── hasMany
@@ -166,32 +184,33 @@ Borrowing
 # 👥 User Roles
 
 | Role | Permissions |
-|-------|------------|
+|------|-------------|
 | Guest | View Landing Page |
 | Employee | Borrow Assets |
-| Manager | Monitoring & Reports |
-| Admin | Full Access |
+| Staff | Manage Borrowings |
+| Manager | Monitor Inventory & Reports |
+| Admin | Full System Access |
 
 ---
 
 # 📂 Project Structure
 
-```
+```text
 app
  ├── Http
- │     ├── Controllers
- │     ├── Middleware
+ │    ├── Controllers
+ │    ├── Middleware
  │
  ├── Models
  │
 resources
  ├── views
- │      ├── dashboard
- │      ├── products
- │      ├── borrowings
- │      ├── categories
- │      ├── employees
- │      ├── components
+ │    ├── dashboard
+ │    ├── products
+ │    ├── borrowings
+ │    ├── categories
+ │    ├── employees
+ │    ├── components
  │
 routes
 database
@@ -203,8 +222,95 @@ storage
 
 # ⚙ Installation
 
-## 1 Clone Repository
+## 1. Clone Repository
 
 ```bash
-git clone https://github.com/username/inlife-ims.git
+git clone https://github.com/YOUR_USERNAME/YOUR_REPOSITORY.git
 ```
+
+## 2. Enter Project Directory
+
+```bash
+cd YOUR_REPOSITORY
+```
+
+## 3. Install Dependencies
+
+```bash
+composer install
+npm install
+```
+
+## 4. Copy Environment File
+
+```bash
+cp .env.example .env
+```
+
+## 5. Generate Application Key
+
+```bash
+php artisan key:generate
+```
+
+## 6. Configure Database
+
+Edit your `.env` file.
+
+```env
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=inlife_ims
+DB_USERNAME=root
+DB_PASSWORD=
+```
+
+## 7. Run Migration & Seeder
+
+```bash
+php artisan migrate --seed
+```
+
+## 8. Build Frontend Assets
+
+```bash
+npm run build
+```
+
+or during development
+
+```bash
+npm run dev
+```
+
+## 9. Run Application
+
+```bash
+php artisan serve
+```
+
+---
+
+# 🚀 Deployment
+
+The application is deployed on **Railway**.
+
+**Live Website**
+
+https://inlife-inventory-management-system-production.up.railway.app/
+
+---
+
+# 👨‍💻 Developer
+
+Developed by **Titania Kaylife Putri**
+
+Information Systems Student  
+UPN "Veteran" Jawa Timur
+
+---
+
+# 📄 License
+
+This project is licensed under the MIT License.
