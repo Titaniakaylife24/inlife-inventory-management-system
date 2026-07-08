@@ -10,8 +10,6 @@ class HomeController extends Controller
 {
     public function index()
 {
-    $totalAssets = Product::count();
-
-    return $totalAssets;
+    return view('home');
 }
 }
