@@ -14,14 +14,13 @@ RUN apt-get update && apt-get install -y \
     libonig-dev \
     libxml2-dev \
     libicu-dev \
-    && docker-php-ext-configure gd --with-freetype --with-jpeg
-
-docker-php-ext-install \
-    gd \
-    pdo \
-    pdo_mysql \
-    zip \
-    intl
+    && docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install \
+        gd \
+        pdo \
+        pdo_mysql \
+        zip \
+        intl
 
 # Enable Apache Rewrite
 RUN a2enmod rewrite
@@ -44,6 +43,7 @@ RUN npm run build
 
 # Laravel permissions
 RUN mkdir -p storage/framework/{cache,sessions,views}
+RUN chown -R www-data:www-data storage bootstrap/cache
 RUN chmod -R 775 storage bootstrap/cache
 
 # Apache public folder
