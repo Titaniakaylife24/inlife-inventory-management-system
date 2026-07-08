@@ -10,6 +10,8 @@ class HomeController extends Controller
 {
     public function index()
 {
-    return 'HomeController OK';
+    $totalAssets = Product::count();
+
+    return $totalAssets;
 }
 }
