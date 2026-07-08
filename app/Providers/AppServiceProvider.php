@@ -23,11 +23,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        View::composer('*',function($view){
 
     if (app()->environment('production')) {
-            URL::forceScheme('https');
-        }
+        URL::forceScheme('https');
+    }
+
+        View::composer('*',function($view){
 
     if(Auth::check()){
 
