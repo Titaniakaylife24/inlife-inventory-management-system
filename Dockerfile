@@ -35,14 +35,19 @@ COPY . .
 
 RUN composer install --no-dev --optimize-autoloader --no-interaction
 
+RUN php artisan optimize:clear || true
+
 RUN npm install
 RUN npm run build
 
-RUN mkdir -p storage/framework/cache \
+RUN mkdir -p \
+    storage/framework/cache \
     storage/framework/views \
     storage/framework/sessions \
+    storage/framework/testing \
     bootstrap/cache
 
+RUN chown -R www-data:www-data /var/www/html
 RUN chmod -R 775 storage bootstrap/cache
 
 ENV APACHE_DOCUMENT_ROOT=/var/www/html/public
