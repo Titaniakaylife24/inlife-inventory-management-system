@@ -27,7 +27,9 @@ use App\Http\Controllers\GuestReportController;
 |--------------------------------------------------------------------------
 */
 
-Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/', function () {
+    return 'Laravel Works';
+});
 
 Route::get('/inventory', [GuestInventoryController::class,'index'])
     ->name('inventory');
