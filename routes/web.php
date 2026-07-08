@@ -371,6 +371,8 @@ Route::get('/session-test', function () {
     return response()->json([
         'id' => Session::getId(),
         'foo' => Session::get('foo'),
+        'started' => Session::isStarted(),
+        'has_cookie' => request()->hasCookie(config('session.cookie')),
     ]);
 });
 
