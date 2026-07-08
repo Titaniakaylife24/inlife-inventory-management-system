@@ -1,5 +1,3 @@
-
-
 <?php
 
 use Illuminate\Support\Facades\Route;
@@ -146,133 +144,60 @@ Route::get('/dashboard/my-borrowings/{borrowing}',
 
 });
 
-Route::middleware(['auth','role:Staff'])->prefix('dashboard')->group(function () {
-
-    Route::get('/stock-monitoring', [StockController::class, 'index'])
-        ->name('stock.index');
-
-     Route::get('/borrow-request',
-        [BorrowRequestController::class,'index'])
-        ->name('borrow-request.index');
-
-    Route::get('/borrow-request/{borrowing}',
-        [BorrowRequestController::class,'show'])
-        ->name('borrow-request.show');
-
-    Route::get('/report', [ReportController::class, 'index'])
-        ->name('report.index');
-
-    Route::get('/report/export/excel', [ReportController::class, 'exportExcel'])
-    ->name('report.export.excel');
-
-Route::get('/report/export/pdf', [ReportController::class, 'exportPdf'])
-    ->name('report.export.pdf');
-});
-
-Route::middleware(['auth','role:Admin'])
-->prefix('dashboard')
-->group(function () {
-
-    // Dashboard
-    Route::get('/admin',
-        [DashboardController::class,'admin'])
-        ->name('dashboard.admin');
-    
-    Route::resource('location', LocationController::class)
-    ->except('show');
-
-    Route::resource('users', UserController::class);
-
-    // Returns
-    Route::view('/returns','dashboard.admin.returns')
-        ->name('admin.returns.index');
-
-    // Category
-    Route::resource('category', CategoryController::class)
-        ->except('show');
-
-    // Location
-    // nanti
-    // Route::resource('location', LocationController::class)->except('show');
-
-    // Delete Inventory
-    Route::delete(
-        '/inventory/{inventory}',
-        [ProductController::class,'destroy']
-    )->name('dashboard.inventory.destroy');
-
-    Route::get(
-    '/borrow-request',
-    [BorrowRequestController::class,'index']
-)->name('borrow-request.index');
-
-Route::get(
-    '/borrow-request/{borrowing}',
-    [BorrowRequestController::class,'show']
-)->name('borrow-request.show');
-
-Route::put(
-    '/borrow-request/{borrowing}/approve',
-    [BorrowRequestController::class,'approve']
-)->name('borrow-request.approve');
-
-Route::put(
-    '/borrow-request/{borrowing}/reject',
-    [BorrowRequestController::class,'reject']
-)->name('borrow-request.reject');
-
-});
-
-Route::middleware(['auth'])
-->prefix('dashboard')
-->group(function () {
-
-    Route::get(
-        '/borrow-request',
-        [BorrowRequestController::class,'index']
-    )->name('borrow-request.index');
-
-    Route::get(
-        '/borrow-request/{borrowing}',
-        [BorrowRequestController::class,'show']
-    )->name('borrow-request.show');
-
-    Route::get('/report', [ReportController::class,'index'])
-    ->name('report.index');
-
-Route::get('/report/export/excel', [ReportController::class,'exportExcel'])
-    ->name('report.export.excel');
-
-Route::get('/report/export/pdf', [ReportController::class,'exportPdf'])
-    ->name('report.export.pdf');
-
-    // ADMIN ONLY
-    Route::middleware('role:Admin')->group(function(){
-
-        Route::patch(
-            '/borrow-request/{borrowing}/approve',
-            [BorrowRequestController::class,'approve']
-        )->name('borrow-request.approve');
-
-        Route::patch(
-            '/borrow-request/{borrowing}/reject',
-            [BorrowRequestController::class,'reject']
-        )->name('borrow-request.reject');
-
-    });
-
-});
-
-Route::middleware(['auth','role:Admin,Staff'])
+Route::middleware(['auth', 'role:Admin'])
     ->prefix('dashboard')
     ->group(function () {
 
-        Route::get(
-            '/stock-monitoring',
-            [StockController::class,'index']
-        )->name('stock.index');
+        // Dashboard
+        Route::get('/admin', [DashboardController::class, 'admin'])
+            ->name('dashboard.admin');
+        
+        Route::resource('location', LocationController::class)
+            ->except('show');
 
-});
+        Route::resource('users', UserController::class);
+
+        // Returns
+        Route::view('/returns', 'dashboard.admin.returns')
+            ->name('admin.returns.index');
+
+        // Category
+        Route::resource('category', CategoryController::class)
+            ->except('show');
+
+        // Delete Inventory
+        Route::delete('/inventory/{inventory}', [ProductController::class, 'destroy'])
+            ->name('dashboard.inventory.destroy');
+
+        Route::patch('/borrow-request/{borrowing}/approve', [BorrowRequestController::class, 'approve'])
+            ->name('borrow-request.approve');
+
+        Route::patch('/borrow-request/{borrowing}/reject', [BorrowRequestController::class, 'reject'])
+            ->name('borrow-request.reject');
+    });
+
+Route::middleware(['auth', 'role:Admin,Staff'])
+    ->prefix('dashboard')
+    ->group(function () {
+
+        Route::get('/stock-monitoring', [StockController::class, 'index'])
+            ->name('stock.index');
+
+        Route::get('/borrow-request', [BorrowRequestController::class, 'index'])
+            ->name('borrow-request.index');
+
+        Route::get('/borrow-request/{borrowing}', [BorrowRequestController::class, 'show'])
+            ->name('borrow-request.show');
+
+        Route::get('/report', [ReportController::class, 'index'])
+            ->name('report.index');
+
+        Route::get('/report/export/excel', [ReportController::class, 'exportExcel'])
+            ->name('report.export.excel');
+
+        Route::get('/report/export/pdf', [ReportController::class, 'exportPdf'])
+            ->name('report.export.pdf');
+    });
 
 Route::middleware(['auth','role:Manager'])
 ->prefix('dashboard/manager')
@@ -351,29 +276,6 @@ Route::middleware(['auth','role:Manager'])
         [ReportController::class,'exportExcel']
     )->name('manager.report.excel');
 
-});
-
-Route::get('/debug-env', function () {
-    return response()->json([
-        'app_key_set' => !empty(config('app.key')),
-        'session_driver' => config('session.driver'),
-        'session_domain' => config('session.domain'),
-        'session_secure' => config('session.secure'),
-        'app_url' => config('app.url'),
-    ]);
-});
-
-use Illuminate\Support\Facades\Session;
-Route::get('/session-test', function () {
-
-    Session::put('foo', 'bar');
-
-    return response()->json([
-        'id' => Session::getId(),
-        'foo' => Session::get('foo'),
-        'started' => Session::isStarted(),
-        'has_cookie' => request()->hasCookie(config('session.cookie')),
-    ]);
 });
 
 require __DIR__.'/auth.php';
