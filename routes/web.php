@@ -353,4 +353,14 @@ Route::middleware(['auth','role:Manager'])
 
 });
 
+Route::get('/debug-env', function () {
+    return response()->json([
+        'app_key_set' => !empty(config('app.key')),
+        'session_driver' => config('session.driver'),
+        'session_domain' => config('session.domain'),
+        'session_secure' => config('session.secure'),
+        'app_url' => config('app.url'),
+    ]);
+});
+
 require __DIR__.'/auth.php';
