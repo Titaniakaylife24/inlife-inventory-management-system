@@ -2,27 +2,37 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Borrowing;
+use App\Models\Product;
 
-class GuestReportController extends Controller
+class GuestInventoryController extends Controller
 {
     public function index()
     {
-        return view('reports.index', [
+        $products = Product::with([
+            'category',
+            'location'
+        ])->latest()->paginate(8);
 
-            'totalBorrowings' => Borrowing::count(),
+        return view('pages.inventory', [
 
-            'approved' => Borrowing::where('status', 'Approved')->count(),
+            'products' => $products,
 
-            'pending' => Borrowing::where('status', 'Pending')->count(),
+            'totalAssets' => Product::count(),
 
-            'rejected' => Borrowing::where('status', 'Rejected')->count(),
+            'available' => Product::where(
+                'status',
+                'Available'
+            )->count(),
 
-            'returned' => Borrowing::where('status', 'Returned')->count(),
+            'borrowed' => Product::where(
+                'status',
+                'Borrowed'
+            )->count(),
 
-            'borrowings' => Borrowing::latest()
-                ->take(6)
-                ->get(),
+            'maintenance' => Product::where(
+                'status',
+                'Maintenance'
+            )->count(),
 
         ]);
     }
