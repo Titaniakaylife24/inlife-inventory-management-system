@@ -16,11 +16,11 @@ class ProductFactory extends Factory
 
             'location_id' => Location::inRandomOrder()->first()->id,
 
-            'code' => 'AST-'.fake()->unique()->numberBetween(1000,9999),
+            'code' => 'AST-'.$this->faker->unique()->numberBetween(1000,9999),
 
-            'serial_number' => strtoupper(fake()->bothify('SN-######')),
+            'serial_number' => strtoupper($this->faker->bothify('SN-######')),
 
-            'name' => fake()->randomElement([
+            'name' => $this->faker->randomElement([
                 'Laptop Dell',
                 'Laptop Lenovo',
                 'Printer Epson',
@@ -33,7 +33,7 @@ class ProductFactory extends Factory
                 'Switch TP-Link'
             ]),
 
-            'brand' => fake()->randomElement([
+            'brand' => $this->faker->randomElement([
                 'Dell',
                 'Lenovo',
                 'HP',
@@ -46,19 +46,19 @@ class ProductFactory extends Factory
 
             'unit' => 'Unit',
 
-            'description' => fake()->sentence(),
+            'description' => $this->faker->sentence(),
 
-            'stock' => fake()->numberBetween(1,40),
+            'stock' => $this->faker->numberBetween(1,40),
 
             'minimum_stock' => 5,
 
-            'condition' => fake()->randomElement([
+            'condition' => $this->faker->randomElement([
                 'Good',
                 'Fair',
                 'Damaged'
             ]),
 
-            'status' => fake()->randomElement([
+            'status' => $this->faker->randomElement([
                 'Available',
                 'Borrowed',
                 'Maintenance'
