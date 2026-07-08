@@ -1,6 +1,5 @@
 FROM php:8.2-apache
 
-# Install system packages
 RUN apt-get update && apt-get install -y \
     git \
     unzip \
@@ -16,7 +15,6 @@ RUN apt-get update && apt-get install -y \
     libonig-dev \
     libxml2-dev
 
-# Install PHP Extensions
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg
 
 RUN docker-php-ext-install \
@@ -24,32 +22,26 @@ RUN docker-php-ext-install \
     intl \
     pdo \
     pdo_mysql \
-    zip
+    zip \
+    xml
 
-# Enable Apache Rewrite
 RUN a2enmod rewrite
 
-# Install Composer
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
 WORKDIR /var/www/html
 
 COPY . .
 
-# Install PHP packages
 RUN composer install --no-dev --optimize-autoloader --no-interaction
 
-# Install Node packages
 RUN npm install
-
-# Build assets
 RUN npm run build
 
-# Laravel cache directories
-RUN mkdir -p storage/framework/cache
-RUN mkdir -p storage/framework/views
-RUN mkdir -p storage/framework/sessions
-RUN mkdir -p bootstrap/cache
+RUN mkdir -p storage/framework/cache \
+    storage/framework/views \
+    storage/framework/sessions \
+    bootstrap/cache
 
 RUN chmod -R 775 storage bootstrap/cache
 
@@ -59,6 +51,9 @@ RUN sed -ri -e 's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' \
 /etc/apache2/sites-available/*.conf \
 /etc/apache2/apache2.conf
 
+COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
+
 EXPOSE 80
 
-CMD ["apache2-foreground"]
+CMD ["/usr/local/bin/docker-entrypoint.sh"]
