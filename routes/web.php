@@ -363,4 +363,15 @@ Route::get('/debug-env', function () {
     ]);
 });
 
+use Illuminate\Support\Facades\Session;
+Route::get('/session-test', function () {
+
+    Session::put('foo', 'bar');
+
+    return response()->json([
+        'id' => Session::getId(),
+        'foo' => Session::get('foo'),
+    ]);
+});
+
 require __DIR__.'/auth.php';
