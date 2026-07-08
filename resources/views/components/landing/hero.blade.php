@@ -1,3 +1,7 @@
+<div class="bg-red-600 text-white text-5xl p-10">
+    TEST RAILWAY
+</div>
+
 <section id="home"
     class="relative overflow-hidden pt-36 pb-24 bg-gradient-to-br from-pink-50 via-white to-purple-100 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
 
